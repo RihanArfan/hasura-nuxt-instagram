@@ -2,6 +2,13 @@
 export default defineNuxtConfig({
   modules: ["@nuxthq/ui", "@vueuse/nuxt"],
 
+  runtimeConfig: {
+    public: {
+      nhostSubdomain: "",
+      nhostRegion: "",
+    },
+  },
+
   experimental: {
     typedPages: true,
   },
