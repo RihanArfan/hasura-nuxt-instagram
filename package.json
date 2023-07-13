@@ -14,7 +14,7 @@
     "@graphql-codegen/client-preset": "^4.0.1",
     "@nuxt/devtools": "^0.6.7",
     "@nuxthq/ui": "^2.5.0",
-    "@types/node": "^20.4.1",
+    "@types/node": "^20.4.2",
     "@urql/exchange-graphcache": "^6.1.4",
     "@vueuse/components": "^10.2.1",
     "@vueuse/core": "^10.2.1",
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@nhost/vue": "^1.13.33",
-    "@urql/exchange-auth": "^2.1.4",
+    "@urql/exchange-auth": "^2.1.5",
     "@urql/vue": "^1.1.2",
     "graphql": "^16.7.1",
     "graphql-ws": "^5.14.0"
