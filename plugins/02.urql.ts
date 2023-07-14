@@ -1,11 +1,10 @@
-import { useAccessToken } from "@nhost/vue";
 import { createClient, ssrExchange, fetchExchange } from "@urql/core";
 import { type Exchange, cacheExchange, subscriptionExchange } from "@urql/vue";
 import {
   type SubscribePayload,
   createClient as createWSClient,
 } from "graphql-ws";
-import { ref, defineNuxtPlugin } from "#imports";
+import { ref, defineNuxtPlugin, useNuxtApp } from "#imports";
 
 // import introspection from "~/gql/introspection";
 
@@ -14,9 +13,9 @@ const ssrKey = "__URQL_DATA__";
 // see: https://github.com/nhost/nhost/blob/main/integrations/react-urql/src/provider.tsx
 // see: https://github.com/holwech/supabase-nuxt-graphql-demo/blob/main/plugins/urql.ts
 // see: https://github.com/gbicou/nuxt3-urql/blob/main/plugins/urql.ts
-export default defineNuxtPlugin(async (nuxt) => {
+export default defineNuxtPlugin((nuxt) => {
   const { $nhost } = useNuxtApp();
-  const accessToken = useAccessToken();
+  const accessToken = $nhost.auth.getAccessToken();
 
   // ssr client hydration
   const ssr = ssrExchange({
@@ -65,15 +64,14 @@ export default defineNuxtPlugin(async (nuxt) => {
     // see: https://github.com/nhost/nhost/blob/main/integrations/react-urql/src/provider.tsx#L75
 
     let activeSocket: any;
-
-    watch(accessToken, () => {
+    $nhost.auth.onTokenChanged(() => {
       if (!activeSocket) return;
       activeSocket.close();
     });
 
     // see: https://the-guild.dev/graphql/ws/recipes#client-usage-with-urql
     const wsClient = createWSClient({
-      url: $nhost.graphql.wsUrl,
+      url: $nhost.graphql.url.replace("http", "ws"),
       connectionParams() {
         return { headers: { ...getHeaders() } };
       },
@@ -97,7 +95,7 @@ export default defineNuxtPlugin(async (nuxt) => {
   }
 
   const client = createClient({
-    url: $nhost.graphql.httpUrl,
+    url: $nhost.graphql.url,
     requestPolicy: "cache-and-network",
     exchanges,
     fetchOptions: () => ({
