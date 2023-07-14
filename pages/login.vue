@@ -1,43 +1,30 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="w-full h-screen flex flex-col justify-center items-center px-3">
-    <h1 class="font-bold text-2xl mb-5">Rihan Social</h1>
+  <div
+    class="flex h-screen w-full flex-col items-center justify-center px-3 text-center"
+  >
+    <UCard class="px-5 py-2 sm:w-[470px]">
+      <h1 class="mb-2 text-2xl font-bold">Rihan Social</h1>
+      <h2 class="mb-10 text-xl">Login into to continue</h2>
 
-    <UCard class="w-full sm:w-2/3 md:w-1/3">
       <UInput
         icon="i-heroicons-user"
         placeholder="Username"
-        size="lg"
+        size="xl"
         color="white"
         :trailing="false"
-        class="mb-3"
+        class="mb-6 py-4"
       />
 
-      <UInput
-        icon="i-heroicons-lock-closed"
-        placeholder="Password"
-        size="lg"
-        color="white"
-        :trailing="false"
-      />
-
-      <div class="mt-4 flex items-center">
-        <UButton class="basis-1/2" size="lg" block>
-          Log in
+      <div class="mt-7 flex items-center justify-end">
+        <UButton color="gray" variant="link">Create an account</UButton>
+        <UButton class="ms-5 basis-2/5" size="xl" block label="Log in">
           <template #trailing>
             <UIcon name="i-heroicons-arrow-right-20-solid" />
           </template>
         </UButton>
-
-        <UButton color="gray" variant="link" class="ms-2">
-          Reset password
-        </UButton>
       </div>
     </UCard>
-
-    <UButton color="gray" variant="link" class="mt-2">
-      Create an account
-    </UButton>
   </div>
 </template>
