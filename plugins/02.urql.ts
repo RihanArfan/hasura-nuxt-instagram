@@ -93,7 +93,7 @@ export default defineNuxtPlugin((nuxt) => {
           subscribe: (sink) => {
             const dispose = wsClient.subscribe(
               operation as SubscribePayload,
-              sink
+              sink,
             );
             return { unsubscribe: dispose };
           },
@@ -105,7 +105,7 @@ export default defineNuxtPlugin((nuxt) => {
   const client = createClient({
     url: $nhost.graphql.httpUrl,
     requestPolicy: "cache-and-network",
-    exchanges: [cacheExchange({ schema }), ssr, fetchExchange],
+    exchanges,
     fetchOptions: () => ({
       headers: getHeaders(),
     }),
