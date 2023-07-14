@@ -26,6 +26,9 @@ const config: CodegenConfig = {
         useTypeImports: true,
       },
     },
+    "./gql/introspection.ts": {
+      plugins: ["urql-introspection"],
+    },
   },
 };
 

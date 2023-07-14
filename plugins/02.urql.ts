@@ -1,12 +1,15 @@
 import { createClient, ssrExchange, fetchExchange } from "@urql/core";
-import { type Exchange, cacheExchange, subscriptionExchange } from "@urql/vue";
+import { type Exchange, subscriptionExchange } from "@urql/vue";
+import { cacheExchange } from "@urql/exchange-graphcache";
+import { relayPagination } from "@urql/exchange-graphcache/extras";
+
 import {
   type SubscribePayload,
   createClient as createWSClient,
 } from "graphql-ws";
 import { ref, defineNuxtPlugin, useNuxtApp } from "#imports";
 
-// import introspection from "~/gql/introspection";
+import schema from "~/gql/introspection";
 
 const ssrKey = "__URQL_DATA__";
 
@@ -50,9 +53,14 @@ export default defineNuxtPlugin((nuxt) => {
 
   // urql exchanges
   let exchanges: Exchange[] = [
-    // cacheExchange({
-    //   schema: introspection,
-    // }),
+    cacheExchange({
+      schema: schema,
+      resolvers: {
+        Query: {
+          posts: relayPagination(),
+        },
+      },
+    }),
     ssr,
     fetchExchange,
   ];
@@ -71,7 +79,7 @@ export default defineNuxtPlugin((nuxt) => {
 
     // see: https://the-guild.dev/graphql/ws/recipes#client-usage-with-urql
     const wsClient = createWSClient({
-      url: $nhost.graphql.url.replace("http", "ws"),
+      url: $nhost.graphql.wsUrl,
       connectionParams() {
         return { headers: { ...getHeaders() } };
       },
@@ -95,9 +103,9 @@ export default defineNuxtPlugin((nuxt) => {
   }
 
   const client = createClient({
-    url: $nhost.graphql.url,
+    url: $nhost.graphql.httpUrl,
     requestPolicy: "cache-and-network",
-    exchanges,
+    exchanges: [cacheExchange({ schema }), ssr, fetchExchange],
     fetchOptions: () => ({
       headers: getHeaders(),
     }),
