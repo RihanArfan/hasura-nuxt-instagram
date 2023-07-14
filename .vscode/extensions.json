@@ -1,3 +1,8 @@
 {
-  "recommendations": ["graphql.vscode-graphql"]
+  "recommendations": [
+    "vue.volar",
+    "graphql.vscode-graphql",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
+  ]
 }
