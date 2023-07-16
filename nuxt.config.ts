@@ -13,10 +13,6 @@ export default defineNuxtConfig({
     typedPages: true,
   },
 
-  typescript: {
-    strict: true,
-  },
-
   devtools: {
     enabled: true,
   },
