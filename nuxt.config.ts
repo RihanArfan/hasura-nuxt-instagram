@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ["@nuxthq/ui", "@vueuse/nuxt"],
+  modules: ["@nuxthq/ui", "@vueuse/nuxt", "@vee-validate/nuxt"],
 
   runtimeConfig: {
     public: {
@@ -15,11 +15,6 @@ export default defineNuxtConfig({
 
   typescript: {
     strict: true,
-    tsConfig: {
-      compilerOptions: {
-        moduleResolution: "bundler",
-      },
-    },
   },
 
   devtools: {
