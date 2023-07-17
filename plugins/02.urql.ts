@@ -1,7 +1,6 @@
 import { createClient, ssrExchange, fetchExchange } from "@urql/core";
 import { type Exchange, subscriptionExchange } from "@urql/vue";
 import { cacheExchange } from "@urql/exchange-graphcache";
-import { relayPagination } from "@urql/exchange-graphcache/extras";
 
 import {
   type SubscribePayload,
@@ -55,11 +54,6 @@ export default defineNuxtPlugin((nuxt) => {
   let exchanges: Exchange[] = [
     cacheExchange({
       schema: schema,
-      resolvers: {
-        Query: {
-          posts: relayPagination(),
-        },
-      },
     }),
     ssr,
     fetchExchange,
