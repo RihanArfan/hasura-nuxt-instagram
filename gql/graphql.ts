@@ -2266,13 +2266,17 @@ export type Citext_Comparison_Exp = {
   _similar?: InputMaybe<Scalars['citext']['input']>;
 };
 
-/** columns and relationships of "comments" */
+/** Post comments */
 export type Comments = {
   __typename?: 'comments';
   comment: Scalars['String']['output'];
-  id: Scalars['Int']['output'];
-  post: Scalars['uuid']['output'];
-  user: Scalars['uuid']['output'];
+  id: Scalars['uuid']['output'];
+  /** An object relationship */
+  post: Posts;
+  post_id: Scalars['uuid']['output'];
+  /** An object relationship */
+  profile: Profiles;
+  profile_id: Scalars['uuid']['output'];
 };
 
 /** aggregated selection of "comments" */
@@ -2282,20 +2286,23 @@ export type Comments_Aggregate = {
   nodes: Array<Comments>;
 };
 
+export type Comments_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Comments_Aggregate_Bool_Exp_Count>;
+};
+
+export type Comments_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Comments_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Comments_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "comments" */
 export type Comments_Aggregate_Fields = {
   __typename?: 'comments_aggregate_fields';
-  avg?: Maybe<Comments_Avg_Fields>;
   count: Scalars['Int']['output'];
   max?: Maybe<Comments_Max_Fields>;
   min?: Maybe<Comments_Min_Fields>;
-  stddev?: Maybe<Comments_Stddev_Fields>;
-  stddev_pop?: Maybe<Comments_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Comments_Stddev_Samp_Fields>;
-  sum?: Maybe<Comments_Sum_Fields>;
-  var_pop?: Maybe<Comments_Var_Pop_Fields>;
-  var_samp?: Maybe<Comments_Var_Samp_Fields>;
-  variance?: Maybe<Comments_Variance_Fields>;
 };
 
 
@@ -2305,10 +2312,18 @@ export type Comments_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-/** aggregate avg on columns */
-export type Comments_Avg_Fields = {
-  __typename?: 'comments_avg_fields';
-  id?: Maybe<Scalars['Float']['output']>;
+/** order by aggregate values of table "comments" */
+export type Comments_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Comments_Max_Order_By>;
+  min?: InputMaybe<Comments_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "comments" */
+export type Comments_Arr_Rel_Insert_Input = {
+  data: Array<Comments_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Comments_On_Conflict>;
 };
 
 /** Boolean expression to filter rows from the table "comments". All fields are combined with a logical 'AND'. */
@@ -2317,9 +2332,11 @@ export type Comments_Bool_Exp = {
   _not?: InputMaybe<Comments_Bool_Exp>;
   _or?: InputMaybe<Array<Comments_Bool_Exp>>;
   comment?: InputMaybe<String_Comparison_Exp>;
-  id?: InputMaybe<Int_Comparison_Exp>;
-  post?: InputMaybe<Uuid_Comparison_Exp>;
-  user?: InputMaybe<Uuid_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  post?: InputMaybe<Posts_Bool_Exp>;
+  post_id?: InputMaybe<Uuid_Comparison_Exp>;
+  profile?: InputMaybe<Profiles_Bool_Exp>;
+  profile_id?: InputMaybe<Uuid_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "comments" */
@@ -2331,26 +2348,45 @@ export enum Comments_Constraint {
 /** input type for inserting data into table "comments" */
 export type Comments_Insert_Input = {
   comment?: InputMaybe<Scalars['String']['input']>;
-  post?: InputMaybe<Scalars['uuid']['input']>;
-  user?: InputMaybe<Scalars['uuid']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  post?: InputMaybe<Posts_Obj_Rel_Insert_Input>;
+  post_id?: InputMaybe<Scalars['uuid']['input']>;
+  profile?: InputMaybe<Profiles_Obj_Rel_Insert_Input>;
+  profile_id?: InputMaybe<Scalars['uuid']['input']>;
 };
 
 /** aggregate max on columns */
 export type Comments_Max_Fields = {
   __typename?: 'comments_max_fields';
   comment?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['Int']['output']>;
-  post?: Maybe<Scalars['uuid']['output']>;
-  user?: Maybe<Scalars['uuid']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  post_id?: Maybe<Scalars['uuid']['output']>;
+  profile_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by max() on columns of table "comments" */
+export type Comments_Max_Order_By = {
+  comment?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  post_id?: InputMaybe<Order_By>;
+  profile_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Comments_Min_Fields = {
   __typename?: 'comments_min_fields';
   comment?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['Int']['output']>;
-  post?: Maybe<Scalars['uuid']['output']>;
-  user?: Maybe<Scalars['uuid']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  post_id?: Maybe<Scalars['uuid']['output']>;
+  profile_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by min() on columns of table "comments" */
+export type Comments_Min_Order_By = {
+  comment?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  post_id?: InputMaybe<Order_By>;
+  profile_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "comments" */
@@ -2373,13 +2409,15 @@ export type Comments_On_Conflict = {
 export type Comments_Order_By = {
   comment?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  post?: InputMaybe<Order_By>;
-  user?: InputMaybe<Order_By>;
+  post?: InputMaybe<Posts_Order_By>;
+  post_id?: InputMaybe<Order_By>;
+  profile?: InputMaybe<Profiles_Order_By>;
+  profile_id?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: comments */
 export type Comments_Pk_Columns_Input = {
-  id: Scalars['Int']['input'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "comments" */
@@ -2389,34 +2427,17 @@ export enum Comments_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Post = 'post',
+  PostId = 'post_id',
   /** column name */
-  User = 'user'
+  ProfileId = 'profile_id'
 }
 
 /** input type for updating data in table "comments" */
 export type Comments_Set_Input = {
   comment?: InputMaybe<Scalars['String']['input']>;
-  post?: InputMaybe<Scalars['uuid']['input']>;
-  user?: InputMaybe<Scalars['uuid']['input']>;
-};
-
-/** aggregate stddev on columns */
-export type Comments_Stddev_Fields = {
-  __typename?: 'comments_stddev_fields';
-  id?: Maybe<Scalars['Float']['output']>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Comments_Stddev_Pop_Fields = {
-  __typename?: 'comments_stddev_pop_fields';
-  id?: Maybe<Scalars['Float']['output']>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Comments_Stddev_Samp_Fields = {
-  __typename?: 'comments_stddev_samp_fields';
-  id?: Maybe<Scalars['Float']['output']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  post_id?: InputMaybe<Scalars['uuid']['input']>;
+  profile_id?: InputMaybe<Scalars['uuid']['input']>;
 };
 
 /** Streaming cursor of the table "comments" */
@@ -2430,15 +2451,9 @@ export type Comments_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Comments_Stream_Cursor_Value_Input = {
   comment?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['Int']['input']>;
-  post?: InputMaybe<Scalars['uuid']['input']>;
-  user?: InputMaybe<Scalars['uuid']['input']>;
-};
-
-/** aggregate sum on columns */
-export type Comments_Sum_Fields = {
-  __typename?: 'comments_sum_fields';
-  id?: Maybe<Scalars['Int']['output']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  post_id?: InputMaybe<Scalars['uuid']['input']>;
+  profile_id?: InputMaybe<Scalars['uuid']['input']>;
 };
 
 /** update columns of table "comments" */
@@ -2446,9 +2461,11 @@ export enum Comments_Update_Column {
   /** column name */
   Comment = 'comment',
   /** column name */
-  Post = 'post',
+  Id = 'id',
   /** column name */
-  User = 'user'
+  PostId = 'post_id',
+  /** column name */
+  ProfileId = 'profile_id'
 }
 
 export type Comments_Updates = {
@@ -2456,24 +2473,6 @@ export type Comments_Updates = {
   _set?: InputMaybe<Comments_Set_Input>;
   /** filter the rows which have to be updated */
   where: Comments_Bool_Exp;
-};
-
-/** aggregate var_pop on columns */
-export type Comments_Var_Pop_Fields = {
-  __typename?: 'comments_var_pop_fields';
-  id?: Maybe<Scalars['Float']['output']>;
-};
-
-/** aggregate var_samp on columns */
-export type Comments_Var_Samp_Fields = {
-  __typename?: 'comments_var_samp_fields';
-  id?: Maybe<Scalars['Float']['output']>;
-};
-
-/** aggregate variance on columns */
-export type Comments_Variance_Fields = {
-  __typename?: 'comments_variance_fields';
-  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** ordering argument of a cursor */
@@ -2698,6 +2697,13 @@ export type Files_Mutation_Response = {
   returning: Array<Files>;
 };
 
+/** input type for inserting object relation for remote table "storage.files" */
+export type Files_Obj_Rel_Insert_Input = {
+  data: Files_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Files_On_Conflict>;
+};
+
 /** on_conflict condition type for table "storage.files" */
 export type Files_On_Conflict = {
   constraint: Files_Constraint;
@@ -2907,16 +2913,18 @@ export type Files_Variance_Order_By = {
   size?: InputMaybe<Order_By>;
 };
 
-/** columns and relationships of "following" */
+/** User following/followers */
 export type Following = {
   __typename?: 'following';
-  following: Scalars['uuid']['output'];
-  id: Scalars['Int']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  following_profile_id: Scalars['uuid']['output'];
+  is_accepted: Scalars['Boolean']['output'];
   /** An object relationship */
   profile: Profiles;
   /** An object relationship */
-  profileByUser: Profiles;
-  user: Scalars['uuid']['output'];
+  profileByProfileId: Profiles;
+  profile_id: Scalars['uuid']['output'];
+  updated_at: Scalars['timestamptz']['output'];
 };
 
 /** aggregated selection of "following" */
@@ -2927,7 +2935,23 @@ export type Following_Aggregate = {
 };
 
 export type Following_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Following_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Following_Aggregate_Bool_Exp_Bool_Or>;
   count?: InputMaybe<Following_Aggregate_Bool_Exp_Count>;
+};
+
+export type Following_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Following_Select_Column_Following_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Following_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Following_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Following_Select_Column_Following_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Following_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
 };
 
 export type Following_Aggregate_Bool_Exp_Count = {
@@ -2940,17 +2964,9 @@ export type Following_Aggregate_Bool_Exp_Count = {
 /** aggregate fields of "following" */
 export type Following_Aggregate_Fields = {
   __typename?: 'following_aggregate_fields';
-  avg?: Maybe<Following_Avg_Fields>;
   count: Scalars['Int']['output'];
   max?: Maybe<Following_Max_Fields>;
   min?: Maybe<Following_Min_Fields>;
-  stddev?: Maybe<Following_Stddev_Fields>;
-  stddev_pop?: Maybe<Following_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Following_Stddev_Samp_Fields>;
-  sum?: Maybe<Following_Sum_Fields>;
-  var_pop?: Maybe<Following_Var_Pop_Fields>;
-  var_samp?: Maybe<Following_Var_Samp_Fields>;
-  variance?: Maybe<Following_Variance_Fields>;
 };
 
 
@@ -2962,17 +2978,9 @@ export type Following_Aggregate_FieldsCountArgs = {
 
 /** order by aggregate values of table "following" */
 export type Following_Aggregate_Order_By = {
-  avg?: InputMaybe<Following_Avg_Order_By>;
   count?: InputMaybe<Order_By>;
   max?: InputMaybe<Following_Max_Order_By>;
   min?: InputMaybe<Following_Min_Order_By>;
-  stddev?: InputMaybe<Following_Stddev_Order_By>;
-  stddev_pop?: InputMaybe<Following_Stddev_Pop_Order_By>;
-  stddev_samp?: InputMaybe<Following_Stddev_Samp_Order_By>;
-  sum?: InputMaybe<Following_Sum_Order_By>;
-  var_pop?: InputMaybe<Following_Var_Pop_Order_By>;
-  var_samp?: InputMaybe<Following_Var_Samp_Order_By>;
-  variance?: InputMaybe<Following_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "following" */
@@ -2982,77 +2990,69 @@ export type Following_Arr_Rel_Insert_Input = {
   on_conflict?: InputMaybe<Following_On_Conflict>;
 };
 
-/** aggregate avg on columns */
-export type Following_Avg_Fields = {
-  __typename?: 'following_avg_fields';
-  id?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by avg() on columns of table "following" */
-export type Following_Avg_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
 /** Boolean expression to filter rows from the table "following". All fields are combined with a logical 'AND'. */
 export type Following_Bool_Exp = {
   _and?: InputMaybe<Array<Following_Bool_Exp>>;
   _not?: InputMaybe<Following_Bool_Exp>;
   _or?: InputMaybe<Array<Following_Bool_Exp>>;
-  following?: InputMaybe<Uuid_Comparison_Exp>;
-  id?: InputMaybe<Int_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  following_profile_id?: InputMaybe<Uuid_Comparison_Exp>;
+  is_accepted?: InputMaybe<Boolean_Comparison_Exp>;
   profile?: InputMaybe<Profiles_Bool_Exp>;
-  profileByUser?: InputMaybe<Profiles_Bool_Exp>;
-  user?: InputMaybe<Uuid_Comparison_Exp>;
+  profileByProfileId?: InputMaybe<Profiles_Bool_Exp>;
+  profile_id?: InputMaybe<Uuid_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "following" */
 export enum Following_Constraint {
-  /** unique or primary key constraint on columns "id" */
+  /** unique or primary key constraint on columns "profile_id", "following_profile_id" */
   FollowingPkey = 'following_pkey'
 }
 
-/** input type for incrementing numeric columns in table "following" */
-export type Following_Inc_Input = {
-  id?: InputMaybe<Scalars['Int']['input']>;
-};
-
 /** input type for inserting data into table "following" */
 export type Following_Insert_Input = {
-  following?: InputMaybe<Scalars['uuid']['input']>;
-  id?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  following_profile_id?: InputMaybe<Scalars['uuid']['input']>;
+  is_accepted?: InputMaybe<Scalars['Boolean']['input']>;
   profile?: InputMaybe<Profiles_Obj_Rel_Insert_Input>;
-  profileByUser?: InputMaybe<Profiles_Obj_Rel_Insert_Input>;
-  user?: InputMaybe<Scalars['uuid']['input']>;
+  profileByProfileId?: InputMaybe<Profiles_Obj_Rel_Insert_Input>;
+  profile_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type Following_Max_Fields = {
   __typename?: 'following_max_fields';
-  following?: Maybe<Scalars['uuid']['output']>;
-  id?: Maybe<Scalars['Int']['output']>;
-  user?: Maybe<Scalars['uuid']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  following_profile_id?: Maybe<Scalars['uuid']['output']>;
+  profile_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by max() on columns of table "following" */
 export type Following_Max_Order_By = {
-  following?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  user?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  following_profile_id?: InputMaybe<Order_By>;
+  profile_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Following_Min_Fields = {
   __typename?: 'following_min_fields';
-  following?: Maybe<Scalars['uuid']['output']>;
-  id?: Maybe<Scalars['Int']['output']>;
-  user?: Maybe<Scalars['uuid']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  following_profile_id?: Maybe<Scalars['uuid']['output']>;
+  profile_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by min() on columns of table "following" */
 export type Following_Min_Order_By = {
-  following?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  user?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  following_profile_id?: InputMaybe<Order_By>;
+  profile_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "following" */
@@ -3073,66 +3073,54 @@ export type Following_On_Conflict = {
 
 /** Ordering options when selecting data from "following". */
 export type Following_Order_By = {
-  following?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  following_profile_id?: InputMaybe<Order_By>;
+  is_accepted?: InputMaybe<Order_By>;
   profile?: InputMaybe<Profiles_Order_By>;
-  profileByUser?: InputMaybe<Profiles_Order_By>;
-  user?: InputMaybe<Order_By>;
+  profileByProfileId?: InputMaybe<Profiles_Order_By>;
+  profile_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: following */
 export type Following_Pk_Columns_Input = {
-  id: Scalars['Int']['input'];
+  following_profile_id: Scalars['uuid']['input'];
+  profile_id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "following" */
 export enum Following_Select_Column {
   /** column name */
-  Following = 'following',
+  CreatedAt = 'created_at',
   /** column name */
-  Id = 'id',
+  FollowingProfileId = 'following_profile_id',
   /** column name */
-  User = 'user'
+  IsAccepted = 'is_accepted',
+  /** column name */
+  ProfileId = 'profile_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** select "following_aggregate_bool_exp_bool_and_arguments_columns" columns of table "following" */
+export enum Following_Select_Column_Following_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsAccepted = 'is_accepted'
+}
+
+/** select "following_aggregate_bool_exp_bool_or_arguments_columns" columns of table "following" */
+export enum Following_Select_Column_Following_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsAccepted = 'is_accepted'
 }
 
 /** input type for updating data in table "following" */
 export type Following_Set_Input = {
-  following?: InputMaybe<Scalars['uuid']['input']>;
-  id?: InputMaybe<Scalars['Int']['input']>;
-  user?: InputMaybe<Scalars['uuid']['input']>;
-};
-
-/** aggregate stddev on columns */
-export type Following_Stddev_Fields = {
-  __typename?: 'following_stddev_fields';
-  id?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by stddev() on columns of table "following" */
-export type Following_Stddev_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Following_Stddev_Pop_Fields = {
-  __typename?: 'following_stddev_pop_fields';
-  id?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by stddev_pop() on columns of table "following" */
-export type Following_Stddev_Pop_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Following_Stddev_Samp_Fields = {
-  __typename?: 'following_stddev_samp_fields';
-  id?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by stddev_samp() on columns of table "following" */
-export type Following_Stddev_Samp_Order_By = {
-  id?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  following_profile_id?: InputMaybe<Scalars['uuid']['input']>;
+  is_accepted?: InputMaybe<Scalars['Boolean']['input']>;
+  profile_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** Streaming cursor of the table "following" */
@@ -3145,72 +3133,32 @@ export type Following_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Following_Stream_Cursor_Value_Input = {
-  following?: InputMaybe<Scalars['uuid']['input']>;
-  id?: InputMaybe<Scalars['Int']['input']>;
-  user?: InputMaybe<Scalars['uuid']['input']>;
-};
-
-/** aggregate sum on columns */
-export type Following_Sum_Fields = {
-  __typename?: 'following_sum_fields';
-  id?: Maybe<Scalars['Int']['output']>;
-};
-
-/** order by sum() on columns of table "following" */
-export type Following_Sum_Order_By = {
-  id?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  following_profile_id?: InputMaybe<Scalars['uuid']['input']>;
+  is_accepted?: InputMaybe<Scalars['Boolean']['input']>;
+  profile_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** update columns of table "following" */
 export enum Following_Update_Column {
   /** column name */
-  Following = 'following',
+  CreatedAt = 'created_at',
   /** column name */
-  Id = 'id',
+  FollowingProfileId = 'following_profile_id',
   /** column name */
-  User = 'user'
+  IsAccepted = 'is_accepted',
+  /** column name */
+  ProfileId = 'profile_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 export type Following_Updates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc?: InputMaybe<Following_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Following_Set_Input>;
   /** filter the rows which have to be updated */
   where: Following_Bool_Exp;
-};
-
-/** aggregate var_pop on columns */
-export type Following_Var_Pop_Fields = {
-  __typename?: 'following_var_pop_fields';
-  id?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by var_pop() on columns of table "following" */
-export type Following_Var_Pop_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type Following_Var_Samp_Fields = {
-  __typename?: 'following_var_samp_fields';
-  id?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by var_samp() on columns of table "following" */
-export type Following_Var_Samp_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type Following_Variance_Fields = {
-  __typename?: 'following_variance_fields';
-  id?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by variance() on columns of table "following" */
-export type Following_Variance_Order_By = {
-  id?: InputMaybe<Order_By>;
 };
 
 export type Jsonb_Cast_Exp = {
@@ -3239,6 +3187,202 @@ export type Jsonb_Comparison_Exp = {
   _lte?: InputMaybe<Scalars['jsonb']['input']>;
   _neq?: InputMaybe<Scalars['jsonb']['input']>;
   _nin?: InputMaybe<Array<Scalars['jsonb']['input']>>;
+};
+
+/** Post likes */
+export type Likes = {
+  __typename?: 'likes';
+  created_at: Scalars['timestamptz']['output'];
+  /** An object relationship */
+  post: Posts;
+  post_id: Scalars['uuid']['output'];
+  /** An object relationship */
+  profile: Profiles;
+  profile_id: Scalars['uuid']['output'];
+};
+
+/** aggregated selection of "likes" */
+export type Likes_Aggregate = {
+  __typename?: 'likes_aggregate';
+  aggregate?: Maybe<Likes_Aggregate_Fields>;
+  nodes: Array<Likes>;
+};
+
+export type Likes_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Likes_Aggregate_Bool_Exp_Count>;
+};
+
+export type Likes_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Likes_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Likes_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "likes" */
+export type Likes_Aggregate_Fields = {
+  __typename?: 'likes_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<Likes_Max_Fields>;
+  min?: Maybe<Likes_Min_Fields>;
+};
+
+
+/** aggregate fields of "likes" */
+export type Likes_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Likes_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "likes" */
+export type Likes_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Likes_Max_Order_By>;
+  min?: InputMaybe<Likes_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "likes" */
+export type Likes_Arr_Rel_Insert_Input = {
+  data: Array<Likes_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Likes_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "likes". All fields are combined with a logical 'AND'. */
+export type Likes_Bool_Exp = {
+  _and?: InputMaybe<Array<Likes_Bool_Exp>>;
+  _not?: InputMaybe<Likes_Bool_Exp>;
+  _or?: InputMaybe<Array<Likes_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  post?: InputMaybe<Posts_Bool_Exp>;
+  post_id?: InputMaybe<Uuid_Comparison_Exp>;
+  profile?: InputMaybe<Profiles_Bool_Exp>;
+  profile_id?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "likes" */
+export enum Likes_Constraint {
+  /** unique or primary key constraint on columns "profile_id", "post_id" */
+  LikesPkey = 'likes_pkey'
+}
+
+/** input type for inserting data into table "likes" */
+export type Likes_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  post?: InputMaybe<Posts_Obj_Rel_Insert_Input>;
+  post_id?: InputMaybe<Scalars['uuid']['input']>;
+  profile?: InputMaybe<Profiles_Obj_Rel_Insert_Input>;
+  profile_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate max on columns */
+export type Likes_Max_Fields = {
+  __typename?: 'likes_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  post_id?: Maybe<Scalars['uuid']['output']>;
+  profile_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by max() on columns of table "likes" */
+export type Likes_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  post_id?: InputMaybe<Order_By>;
+  profile_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Likes_Min_Fields = {
+  __typename?: 'likes_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  post_id?: Maybe<Scalars['uuid']['output']>;
+  profile_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by min() on columns of table "likes" */
+export type Likes_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  post_id?: InputMaybe<Order_By>;
+  profile_id?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "likes" */
+export type Likes_Mutation_Response = {
+  __typename?: 'likes_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Likes>;
+};
+
+/** on_conflict condition type for table "likes" */
+export type Likes_On_Conflict = {
+  constraint: Likes_Constraint;
+  update_columns?: Array<Likes_Update_Column>;
+  where?: InputMaybe<Likes_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "likes". */
+export type Likes_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  post?: InputMaybe<Posts_Order_By>;
+  post_id?: InputMaybe<Order_By>;
+  profile?: InputMaybe<Profiles_Order_By>;
+  profile_id?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: likes */
+export type Likes_Pk_Columns_Input = {
+  post_id: Scalars['uuid']['input'];
+  profile_id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "likes" */
+export enum Likes_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  PostId = 'post_id',
+  /** column name */
+  ProfileId = 'profile_id'
+}
+
+/** input type for updating data in table "likes" */
+export type Likes_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  post_id?: InputMaybe<Scalars['uuid']['input']>;
+  profile_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** Streaming cursor of the table "likes" */
+export type Likes_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Likes_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Likes_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  post_id?: InputMaybe<Scalars['uuid']['input']>;
+  profile_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** update columns of table "likes" */
+export enum Likes_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  PostId = 'post_id',
+  /** column name */
+  ProfileId = 'profile_id'
+}
+
+export type Likes_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Likes_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Likes_Bool_Exp;
 };
 
 /** mutation root */
@@ -3296,6 +3440,10 @@ export type Mutation_Root = {
   delete_following?: Maybe<Following_Mutation_Response>;
   /** delete single row from the table: "following" */
   delete_following_by_pk?: Maybe<Following>;
+  /** delete data from the table: "likes" */
+  delete_likes?: Maybe<Likes_Mutation_Response>;
+  /** delete single row from the table: "likes" */
+  delete_likes_by_pk?: Maybe<Likes>;
   /** delete data from the table: "posts" */
   delete_posts?: Maybe<Posts_Mutation_Response>;
   /** delete single row from the table: "posts" */
@@ -3356,6 +3504,10 @@ export type Mutation_Root = {
   insert_following?: Maybe<Following_Mutation_Response>;
   /** insert a single row into the table: "following" */
   insert_following_one?: Maybe<Following>;
+  /** insert data into the table: "likes" */
+  insert_likes?: Maybe<Likes_Mutation_Response>;
+  /** insert a single row into the table: "likes" */
+  insert_likes_one?: Maybe<Likes>;
   /** insert data into the table: "posts" */
   insert_posts?: Maybe<Posts_Mutation_Response>;
   /** insert a single row into the table: "posts" */
@@ -3440,6 +3592,12 @@ export type Mutation_Root = {
   update_following_by_pk?: Maybe<Following>;
   /** update multiples rows of table: "following" */
   update_following_many?: Maybe<Array<Maybe<Following_Mutation_Response>>>;
+  /** update data of the table: "likes" */
+  update_likes?: Maybe<Likes_Mutation_Response>;
+  /** update single row of the table: "likes" */
+  update_likes_by_pk?: Maybe<Likes>;
+  /** update multiples rows of table: "likes" */
+  update_likes_many?: Maybe<Array<Maybe<Likes_Mutation_Response>>>;
   /** update data of the table: "posts" */
   update_posts?: Maybe<Posts_Mutation_Response>;
   /** update single row of the table: "posts" */
@@ -3597,7 +3755,7 @@ export type Mutation_RootDelete_CommentsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Comments_By_PkArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -3609,7 +3767,21 @@ export type Mutation_RootDelete_FollowingArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Following_By_PkArgs = {
-  id: Scalars['Int']['input'];
+  following_profile_id: Scalars['uuid']['input'];
+  profile_id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LikesArgs = {
+  where: Likes_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Likes_By_PkArgs = {
+  post_id: Scalars['uuid']['input'];
+  profile_id: Scalars['uuid']['input'];
 };
 
 
@@ -3633,7 +3805,7 @@ export type Mutation_RootDelete_ProfilesArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Profiles_By_PkArgs = {
-  user: Scalars['uuid']['input'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -3816,6 +3988,20 @@ export type Mutation_RootInsert_FollowingArgs = {
 export type Mutation_RootInsert_Following_OneArgs = {
   object: Following_Insert_Input;
   on_conflict?: InputMaybe<Following_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LikesArgs = {
+  objects: Array<Likes_Insert_Input>;
+  on_conflict?: InputMaybe<Likes_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Likes_OneArgs = {
+  object: Likes_Insert_Input;
+  on_conflict?: InputMaybe<Likes_On_Conflict>;
 };
 
 
@@ -4119,7 +4305,6 @@ export type Mutation_RootUpdate_Files_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_FollowingArgs = {
-  _inc?: InputMaybe<Following_Inc_Input>;
   _set?: InputMaybe<Following_Set_Input>;
   where: Following_Bool_Exp;
 };
@@ -4127,7 +4312,6 @@ export type Mutation_RootUpdate_FollowingArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Following_By_PkArgs = {
-  _inc?: InputMaybe<Following_Inc_Input>;
   _set?: InputMaybe<Following_Set_Input>;
   pk_columns: Following_Pk_Columns_Input;
 };
@@ -4136,6 +4320,26 @@ export type Mutation_RootUpdate_Following_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Following_ManyArgs = {
   updates: Array<Following_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LikesArgs = {
+  _set?: InputMaybe<Likes_Set_Input>;
+  where: Likes_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Likes_By_PkArgs = {
+  _set?: InputMaybe<Likes_Set_Input>;
+  pk_columns: Likes_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Likes_ManyArgs = {
+  updates: Array<Likes_Updates>;
 };
 
 
@@ -4200,16 +4404,65 @@ export enum Order_By {
   DescNullsLast = 'desc_nulls_last'
 }
 
-/** columns and relationships of "posts" */
+/** Posts */
 export type Posts = {
   __typename?: 'posts';
   caption?: Maybe<Scalars['String']['output']>;
+  /** An array relationship */
+  comments: Array<Comments>;
+  /** An aggregate relationship */
+  comments_aggregate: Comments_Aggregate;
   created_at: Scalars['timestamptz']['output'];
   id: Scalars['uuid']['output'];
-  media: Scalars['uuid']['output'];
+  /** An array relationship */
+  likes: Array<Likes>;
+  /** An aggregate relationship */
+  likes_aggregate: Likes_Aggregate;
   /** An object relationship */
-  profile: Profiles;
-  user: Scalars['uuid']['output'];
+  media: Files;
+  media_id: Scalars['uuid']['output'];
+  profile_id: Scalars['uuid']['output'];
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+
+/** Posts */
+export type PostsCommentsArgs = {
+  distinct_on?: InputMaybe<Array<Comments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Comments_Order_By>>;
+  where?: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+/** Posts */
+export type PostsComments_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Comments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Comments_Order_By>>;
+  where?: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+/** Posts */
+export type PostsLikesArgs = {
+  distinct_on?: InputMaybe<Array<Likes_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Likes_Order_By>>;
+  where?: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+/** Posts */
+export type PostsLikes_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Likes_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Likes_Order_By>>;
+  where?: InputMaybe<Likes_Bool_Exp>;
 };
 
 /** aggregated selection of "posts" */
@@ -4217,17 +4470,6 @@ export type Posts_Aggregate = {
   __typename?: 'posts_aggregate';
   aggregate?: Maybe<Posts_Aggregate_Fields>;
   nodes: Array<Posts>;
-};
-
-export type Posts_Aggregate_Bool_Exp = {
-  count?: InputMaybe<Posts_Aggregate_Bool_Exp_Count>;
-};
-
-export type Posts_Aggregate_Bool_Exp_Count = {
-  arguments?: InputMaybe<Array<Posts_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<Posts_Bool_Exp>;
-  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "posts" */
@@ -4245,31 +4487,22 @@ export type Posts_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-/** order by aggregate values of table "posts" */
-export type Posts_Aggregate_Order_By = {
-  count?: InputMaybe<Order_By>;
-  max?: InputMaybe<Posts_Max_Order_By>;
-  min?: InputMaybe<Posts_Min_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "posts" */
-export type Posts_Arr_Rel_Insert_Input = {
-  data: Array<Posts_Insert_Input>;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Posts_On_Conflict>;
-};
-
 /** Boolean expression to filter rows from the table "posts". All fields are combined with a logical 'AND'. */
 export type Posts_Bool_Exp = {
   _and?: InputMaybe<Array<Posts_Bool_Exp>>;
   _not?: InputMaybe<Posts_Bool_Exp>;
   _or?: InputMaybe<Array<Posts_Bool_Exp>>;
   caption?: InputMaybe<String_Comparison_Exp>;
+  comments?: InputMaybe<Comments_Bool_Exp>;
+  comments_aggregate?: InputMaybe<Comments_Aggregate_Bool_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
-  media?: InputMaybe<Uuid_Comparison_Exp>;
-  profile?: InputMaybe<Profiles_Bool_Exp>;
-  user?: InputMaybe<Uuid_Comparison_Exp>;
+  likes?: InputMaybe<Likes_Bool_Exp>;
+  likes_aggregate?: InputMaybe<Likes_Aggregate_Bool_Exp>;
+  media?: InputMaybe<Files_Bool_Exp>;
+  media_id?: InputMaybe<Uuid_Comparison_Exp>;
+  profile_id?: InputMaybe<Uuid_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "posts" */
@@ -4281,11 +4514,14 @@ export enum Posts_Constraint {
 /** input type for inserting data into table "posts" */
 export type Posts_Insert_Input = {
   caption?: InputMaybe<Scalars['String']['input']>;
+  comments?: InputMaybe<Comments_Arr_Rel_Insert_Input>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  media?: InputMaybe<Scalars['uuid']['input']>;
-  profile?: InputMaybe<Profiles_Obj_Rel_Insert_Input>;
-  user?: InputMaybe<Scalars['uuid']['input']>;
+  likes?: InputMaybe<Likes_Arr_Rel_Insert_Input>;
+  media?: InputMaybe<Files_Obj_Rel_Insert_Input>;
+  media_id?: InputMaybe<Scalars['uuid']['input']>;
+  profile_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
@@ -4294,17 +4530,9 @@ export type Posts_Max_Fields = {
   caption?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
-  media?: Maybe<Scalars['uuid']['output']>;
-  user?: Maybe<Scalars['uuid']['output']>;
-};
-
-/** order by max() on columns of table "posts" */
-export type Posts_Max_Order_By = {
-  caption?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  media?: InputMaybe<Order_By>;
-  user?: InputMaybe<Order_By>;
+  media_id?: Maybe<Scalars['uuid']['output']>;
+  profile_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
@@ -4313,17 +4541,9 @@ export type Posts_Min_Fields = {
   caption?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
-  media?: Maybe<Scalars['uuid']['output']>;
-  user?: Maybe<Scalars['uuid']['output']>;
-};
-
-/** order by min() on columns of table "posts" */
-export type Posts_Min_Order_By = {
-  caption?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  media?: InputMaybe<Order_By>;
-  user?: InputMaybe<Order_By>;
+  media_id?: Maybe<Scalars['uuid']['output']>;
+  profile_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** response of any mutation on the table "posts" */
@@ -4333,6 +4553,13 @@ export type Posts_Mutation_Response = {
   affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Posts>;
+};
+
+/** input type for inserting object relation for remote table "posts" */
+export type Posts_Obj_Rel_Insert_Input = {
+  data: Posts_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Posts_On_Conflict>;
 };
 
 /** on_conflict condition type for table "posts" */
@@ -4345,11 +4572,14 @@ export type Posts_On_Conflict = {
 /** Ordering options when selecting data from "posts". */
 export type Posts_Order_By = {
   caption?: InputMaybe<Order_By>;
+  comments_aggregate?: InputMaybe<Comments_Aggregate_Order_By>;
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  media?: InputMaybe<Order_By>;
-  profile?: InputMaybe<Profiles_Order_By>;
-  user?: InputMaybe<Order_By>;
+  likes_aggregate?: InputMaybe<Likes_Aggregate_Order_By>;
+  media?: InputMaybe<Files_Order_By>;
+  media_id?: InputMaybe<Order_By>;
+  profile_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: posts */
@@ -4366,9 +4596,11 @@ export enum Posts_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Media = 'media',
+  MediaId = 'media_id',
   /** column name */
-  User = 'user'
+  ProfileId = 'profile_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "posts" */
@@ -4376,8 +4608,9 @@ export type Posts_Set_Input = {
   caption?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  media?: InputMaybe<Scalars['uuid']['input']>;
-  user?: InputMaybe<Scalars['uuid']['input']>;
+  media_id?: InputMaybe<Scalars['uuid']['input']>;
+  profile_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** Streaming cursor of the table "posts" */
@@ -4393,8 +4626,9 @@ export type Posts_Stream_Cursor_Value_Input = {
   caption?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  media?: InputMaybe<Scalars['uuid']['input']>;
-  user?: InputMaybe<Scalars['uuid']['input']>;
+  media_id?: InputMaybe<Scalars['uuid']['input']>;
+  profile_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** update columns of table "posts" */
@@ -4406,9 +4640,11 @@ export enum Posts_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Media = 'media',
+  MediaId = 'media_id',
   /** column name */
-  User = 'user'
+  ProfileId = 'profile_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 export type Posts_Updates = {
@@ -4418,30 +4654,59 @@ export type Posts_Updates = {
   where: Posts_Bool_Exp;
 };
 
-/** columns and relationships of "profiles" */
+/** Profiles */
 export type Profiles = {
   __typename?: 'profiles';
+  /** An object relationship */
+  account: Users;
+  admin_approved: Scalars['Boolean']['output'];
+  /** An array relationship */
+  comments: Array<Comments>;
+  /** An aggregate relationship */
+  comments_aggregate: Comments_Aggregate;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   description: Scalars['String']['output'];
   /** An array relationship */
-  followings: Array<Following>;
+  followers: Array<Following>;
+  /** An aggregate relationship */
+  followers_aggregate: Following_Aggregate;
   /** An array relationship */
-  followingsByUser: Array<Following>;
+  following: Array<Following>;
   /** An aggregate relationship */
-  followingsByUser_aggregate: Following_Aggregate;
-  /** An aggregate relationship */
-  followings_aggregate: Following_Aggregate;
+  following_aggregate: Following_Aggregate;
+  id: Scalars['uuid']['output'];
+  is_private: Scalars['Boolean']['output'];
   /** An array relationship */
-  posts: Array<Posts>;
+  likes: Array<Likes>;
   /** An aggregate relationship */
-  posts_aggregate: Posts_Aggregate;
-  private: Scalars['Boolean']['output'];
-  user: Scalars['uuid']['output'];
+  likes_aggregate: Likes_Aggregate;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
   username: Scalars['String']['output'];
 };
 
 
-/** columns and relationships of "profiles" */
-export type ProfilesFollowingsArgs = {
+/** Profiles */
+export type ProfilesCommentsArgs = {
+  distinct_on?: InputMaybe<Array<Comments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Comments_Order_By>>;
+  where?: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+/** Profiles */
+export type ProfilesComments_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Comments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Comments_Order_By>>;
+  where?: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+/** Profiles */
+export type ProfilesFollowersArgs = {
   distinct_on?: InputMaybe<Array<Following_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -4450,8 +4715,8 @@ export type ProfilesFollowingsArgs = {
 };
 
 
-/** columns and relationships of "profiles" */
-export type ProfilesFollowingsByUserArgs = {
+/** Profiles */
+export type ProfilesFollowers_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Following_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -4460,8 +4725,8 @@ export type ProfilesFollowingsByUserArgs = {
 };
 
 
-/** columns and relationships of "profiles" */
-export type ProfilesFollowingsByUser_AggregateArgs = {
+/** Profiles */
+export type ProfilesFollowingArgs = {
   distinct_on?: InputMaybe<Array<Following_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -4470,8 +4735,8 @@ export type ProfilesFollowingsByUser_AggregateArgs = {
 };
 
 
-/** columns and relationships of "profiles" */
-export type ProfilesFollowings_AggregateArgs = {
+/** Profiles */
+export type ProfilesFollowing_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Following_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -4480,23 +4745,23 @@ export type ProfilesFollowings_AggregateArgs = {
 };
 
 
-/** columns and relationships of "profiles" */
-export type ProfilesPostsArgs = {
-  distinct_on?: InputMaybe<Array<Posts_Select_Column>>;
+/** Profiles */
+export type ProfilesLikesArgs = {
+  distinct_on?: InputMaybe<Array<Likes_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Posts_Order_By>>;
-  where?: InputMaybe<Posts_Bool_Exp>;
+  order_by?: InputMaybe<Array<Likes_Order_By>>;
+  where?: InputMaybe<Likes_Bool_Exp>;
 };
 
 
-/** columns and relationships of "profiles" */
-export type ProfilesPosts_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Posts_Select_Column>>;
+/** Profiles */
+export type ProfilesLikes_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Likes_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Posts_Order_By>>;
-  where?: InputMaybe<Posts_Bool_Exp>;
+  order_by?: InputMaybe<Array<Likes_Order_By>>;
+  where?: InputMaybe<Likes_Bool_Exp>;
 };
 
 /** aggregated selection of "profiles" */
@@ -4526,23 +4791,27 @@ export type Profiles_Bool_Exp = {
   _and?: InputMaybe<Array<Profiles_Bool_Exp>>;
   _not?: InputMaybe<Profiles_Bool_Exp>;
   _or?: InputMaybe<Array<Profiles_Bool_Exp>>;
+  account?: InputMaybe<Users_Bool_Exp>;
+  admin_approved?: InputMaybe<Boolean_Comparison_Exp>;
+  comments?: InputMaybe<Comments_Bool_Exp>;
+  comments_aggregate?: InputMaybe<Comments_Aggregate_Bool_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
-  followings?: InputMaybe<Following_Bool_Exp>;
-  followingsByUser?: InputMaybe<Following_Bool_Exp>;
-  followingsByUser_aggregate?: InputMaybe<Following_Aggregate_Bool_Exp>;
-  followings_aggregate?: InputMaybe<Following_Aggregate_Bool_Exp>;
-  posts?: InputMaybe<Posts_Bool_Exp>;
-  posts_aggregate?: InputMaybe<Posts_Aggregate_Bool_Exp>;
-  private?: InputMaybe<Boolean_Comparison_Exp>;
-  user?: InputMaybe<Uuid_Comparison_Exp>;
+  followers?: InputMaybe<Following_Bool_Exp>;
+  followers_aggregate?: InputMaybe<Following_Aggregate_Bool_Exp>;
+  following?: InputMaybe<Following_Bool_Exp>;
+  following_aggregate?: InputMaybe<Following_Aggregate_Bool_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  is_private?: InputMaybe<Boolean_Comparison_Exp>;
+  likes?: InputMaybe<Likes_Bool_Exp>;
+  likes_aggregate?: InputMaybe<Likes_Aggregate_Bool_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   username?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "profiles" */
 export enum Profiles_Constraint {
-  /** unique or primary key constraint on columns "description" */
-  ProfilesDescriptionKey = 'profiles_description_key',
-  /** unique or primary key constraint on columns "user" */
+  /** unique or primary key constraint on columns "id" */
   ProfilesPkey = 'profiles_pkey',
   /** unique or primary key constraint on columns "username" */
   ProfilesUsernameKey = 'profiles_username_key'
@@ -4550,28 +4819,37 @@ export enum Profiles_Constraint {
 
 /** input type for inserting data into table "profiles" */
 export type Profiles_Insert_Input = {
+  account?: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  admin_approved?: InputMaybe<Scalars['Boolean']['input']>;
+  comments?: InputMaybe<Comments_Arr_Rel_Insert_Input>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  followings?: InputMaybe<Following_Arr_Rel_Insert_Input>;
-  followingsByUser?: InputMaybe<Following_Arr_Rel_Insert_Input>;
-  posts?: InputMaybe<Posts_Arr_Rel_Insert_Input>;
-  private?: InputMaybe<Scalars['Boolean']['input']>;
-  user?: InputMaybe<Scalars['uuid']['input']>;
+  followers?: InputMaybe<Following_Arr_Rel_Insert_Input>;
+  following?: InputMaybe<Following_Arr_Rel_Insert_Input>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  is_private?: InputMaybe<Scalars['Boolean']['input']>;
+  likes?: InputMaybe<Likes_Arr_Rel_Insert_Input>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type Profiles_Max_Fields = {
   __typename?: 'profiles_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  user?: Maybe<Scalars['uuid']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
   username?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type Profiles_Min_Fields = {
   __typename?: 'profiles_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  user?: Maybe<Scalars['uuid']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
   username?: Maybe<Scalars['String']['output']>;
 };
 
@@ -4600,37 +4878,51 @@ export type Profiles_On_Conflict = {
 
 /** Ordering options when selecting data from "profiles". */
 export type Profiles_Order_By = {
+  account?: InputMaybe<Users_Order_By>;
+  admin_approved?: InputMaybe<Order_By>;
+  comments_aggregate?: InputMaybe<Comments_Aggregate_Order_By>;
+  created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
-  followingsByUser_aggregate?: InputMaybe<Following_Aggregate_Order_By>;
-  followings_aggregate?: InputMaybe<Following_Aggregate_Order_By>;
-  posts_aggregate?: InputMaybe<Posts_Aggregate_Order_By>;
-  private?: InputMaybe<Order_By>;
-  user?: InputMaybe<Order_By>;
+  followers_aggregate?: InputMaybe<Following_Aggregate_Order_By>;
+  following_aggregate?: InputMaybe<Following_Aggregate_Order_By>;
+  id?: InputMaybe<Order_By>;
+  is_private?: InputMaybe<Order_By>;
+  likes_aggregate?: InputMaybe<Likes_Aggregate_Order_By>;
+  updated_at?: InputMaybe<Order_By>;
   username?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: profiles */
 export type Profiles_Pk_Columns_Input = {
-  user: Scalars['uuid']['input'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "profiles" */
 export enum Profiles_Select_Column {
   /** column name */
+  AdminApproved = 'admin_approved',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   Description = 'description',
   /** column name */
-  Private = 'private',
+  Id = 'id',
   /** column name */
-  User = 'user',
+  IsPrivate = 'is_private',
+  /** column name */
+  UpdatedAt = 'updated_at',
   /** column name */
   Username = 'username'
 }
 
 /** input type for updating data in table "profiles" */
 export type Profiles_Set_Input = {
+  admin_approved?: InputMaybe<Scalars['Boolean']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  private?: InputMaybe<Scalars['Boolean']['input']>;
-  user?: InputMaybe<Scalars['uuid']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  is_private?: InputMaybe<Scalars['Boolean']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -4644,20 +4936,29 @@ export type Profiles_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Profiles_Stream_Cursor_Value_Input = {
+  admin_approved?: InputMaybe<Scalars['Boolean']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  private?: InputMaybe<Scalars['Boolean']['input']>;
-  user?: InputMaybe<Scalars['uuid']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  is_private?: InputMaybe<Scalars['Boolean']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "profiles" */
 export enum Profiles_Update_Column {
   /** column name */
+  AdminApproved = 'admin_approved',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   Description = 'description',
   /** column name */
-  Private = 'private',
+  Id = 'id',
   /** column name */
-  User = 'user',
+  IsPrivate = 'is_private',
+  /** column name */
+  UpdatedAt = 'updated_at',
   /** column name */
   Username = 'username'
 }
@@ -4725,9 +5026,9 @@ export type Query_Root = {
   buckets: Array<Buckets>;
   /** fetch aggregated fields from the table: "storage.buckets" */
   bucketsAggregate: Buckets_Aggregate;
-  /** fetch data from the table: "comments" */
+  /** An array relationship */
   comments: Array<Comments>;
-  /** fetch aggregated fields from the table: "comments" */
+  /** An aggregate relationship */
   comments_aggregate: Comments_Aggregate;
   /** fetch data from the table: "comments" using primary key columns */
   comments_by_pk?: Maybe<Comments>;
@@ -4737,15 +5038,21 @@ export type Query_Root = {
   files: Array<Files>;
   /** fetch aggregated fields from the table: "storage.files" */
   filesAggregate: Files_Aggregate;
-  /** fetch data from the table: "following" */
+  /** An array relationship */
   following: Array<Following>;
-  /** fetch aggregated fields from the table: "following" */
+  /** An aggregate relationship */
   following_aggregate: Following_Aggregate;
   /** fetch data from the table: "following" using primary key columns */
   following_by_pk?: Maybe<Following>;
   /** An array relationship */
-  posts: Array<Posts>;
+  likes: Array<Likes>;
   /** An aggregate relationship */
+  likes_aggregate: Likes_Aggregate;
+  /** fetch data from the table: "likes" using primary key columns */
+  likes_by_pk?: Maybe<Likes>;
+  /** fetch data from the table: "posts" */
+  posts: Array<Posts>;
+  /** fetch aggregated fields from the table: "posts" */
   posts_aggregate: Posts_Aggregate;
   /** fetch data from the table: "posts" using primary key columns */
   posts_by_pk?: Maybe<Posts>;
@@ -4990,7 +5297,7 @@ export type Query_RootComments_AggregateArgs = {
 
 
 export type Query_RootComments_By_PkArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -5036,7 +5343,32 @@ export type Query_RootFollowing_AggregateArgs = {
 
 
 export type Query_RootFollowing_By_PkArgs = {
-  id: Scalars['Int']['input'];
+  following_profile_id: Scalars['uuid']['input'];
+  profile_id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootLikesArgs = {
+  distinct_on?: InputMaybe<Array<Likes_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Likes_Order_By>>;
+  where?: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+export type Query_RootLikes_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Likes_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Likes_Order_By>>;
+  where?: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+export type Query_RootLikes_By_PkArgs = {
+  post_id: Scalars['uuid']['input'];
+  profile_id: Scalars['uuid']['input'];
 };
 
 
@@ -5082,7 +5414,7 @@ export type Query_RootProfiles_AggregateArgs = {
 
 
 export type Query_RootProfiles_By_PkArgs = {
-  user: Scalars['uuid']['input'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -5182,9 +5514,9 @@ export type Subscription_Root = {
   bucketsAggregate: Buckets_Aggregate;
   /** fetch data from the table in a streaming manner: "storage.buckets" */
   buckets_stream: Array<Buckets>;
-  /** fetch data from the table: "comments" */
+  /** An array relationship */
   comments: Array<Comments>;
-  /** fetch aggregated fields from the table: "comments" */
+  /** An aggregate relationship */
   comments_aggregate: Comments_Aggregate;
   /** fetch data from the table: "comments" using primary key columns */
   comments_by_pk?: Maybe<Comments>;
@@ -5198,17 +5530,25 @@ export type Subscription_Root = {
   filesAggregate: Files_Aggregate;
   /** fetch data from the table in a streaming manner: "storage.files" */
   files_stream: Array<Files>;
-  /** fetch data from the table: "following" */
+  /** An array relationship */
   following: Array<Following>;
-  /** fetch aggregated fields from the table: "following" */
+  /** An aggregate relationship */
   following_aggregate: Following_Aggregate;
   /** fetch data from the table: "following" using primary key columns */
   following_by_pk?: Maybe<Following>;
   /** fetch data from the table in a streaming manner: "following" */
   following_stream: Array<Following>;
   /** An array relationship */
-  posts: Array<Posts>;
+  likes: Array<Likes>;
   /** An aggregate relationship */
+  likes_aggregate: Likes_Aggregate;
+  /** fetch data from the table: "likes" using primary key columns */
+  likes_by_pk?: Maybe<Likes>;
+  /** fetch data from the table in a streaming manner: "likes" */
+  likes_stream: Array<Likes>;
+  /** fetch data from the table: "posts" */
+  posts: Array<Posts>;
+  /** fetch aggregated fields from the table: "posts" */
   posts_aggregate: Posts_Aggregate;
   /** fetch data from the table: "posts" using primary key columns */
   posts_by_pk?: Maybe<Posts>;
@@ -5522,7 +5862,7 @@ export type Subscription_RootComments_AggregateArgs = {
 
 
 export type Subscription_RootComments_By_PkArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -5582,7 +5922,8 @@ export type Subscription_RootFollowing_AggregateArgs = {
 
 
 export type Subscription_RootFollowing_By_PkArgs = {
-  id: Scalars['Int']['input'];
+  following_profile_id: Scalars['uuid']['input'];
+  profile_id: Scalars['uuid']['input'];
 };
 
 
@@ -5590,6 +5931,37 @@ export type Subscription_RootFollowing_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Following_Stream_Cursor_Input>>;
   where?: InputMaybe<Following_Bool_Exp>;
+};
+
+
+export type Subscription_RootLikesArgs = {
+  distinct_on?: InputMaybe<Array<Likes_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Likes_Order_By>>;
+  where?: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+export type Subscription_RootLikes_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Likes_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Likes_Order_By>>;
+  where?: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+export type Subscription_RootLikes_By_PkArgs = {
+  post_id: Scalars['uuid']['input'];
+  profile_id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootLikes_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Likes_Stream_Cursor_Input>>;
+  where?: InputMaybe<Likes_Bool_Exp>;
 };
 
 
@@ -5642,7 +6014,7 @@ export type Subscription_RootProfiles_AggregateArgs = {
 
 
 export type Subscription_RootProfiles_By_PkArgs = {
-  user: Scalars['uuid']['input'];
+  id: Scalars['uuid']['input'];
 };
 
 
