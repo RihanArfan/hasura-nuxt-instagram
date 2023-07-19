@@ -3,7 +3,6 @@ import { useAuthenticated } from "@nhost/vue";
 import { z } from "zod";
 
 useHead({ title: "Create Account" });
-definePageMeta({ description: "Create a new account" });
 
 const authEmail = useState<string | undefined>("authEmail", () => "");
 
@@ -62,7 +61,7 @@ watch(error, (newError) => {
   <div class="flex h-screen w-full flex-col items-center justify-center px-3">
     <UCard class="px-5 py-2 sm:w-[470px]">
       <div class="text-center">
-        <h1 class="mb-2 text-2xl font-bold">Rihan Social</h1>
+        <h1 class="mb-2 text-2xl font-bold">Social</h1>
         <h2 class="mb-10 text-xl">Create a new account</h2>
       </div>
 
