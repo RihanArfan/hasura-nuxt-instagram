@@ -8,6 +8,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "codegen": "graphql-codegen",
+    "codegen:watch": "graphql-codegen --watch",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
