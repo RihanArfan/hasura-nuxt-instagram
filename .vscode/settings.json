@@ -1,3 +1,9 @@
 {
-  "conventionalCommits.scopes": ["graphql", "auth", "deps", "onboarding"]
+  "conventionalCommits.scopes": [
+    "graphql",
+    "auth",
+    "deps",
+    "onboarding",
+    "feed"
+  ]
 }

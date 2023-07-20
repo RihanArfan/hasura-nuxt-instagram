@@ -16,6 +16,7 @@
     "@graphql-codegen/cli": "^4.0.1",
     "@graphql-codegen/client-preset": "^4.0.1",
     "@graphql-codegen/urql-introspection": "^2.2.1",
+    "@iconify-json/fa6-brands": "^1.1.11",
     "@nuxt/devtools": "^0.7.0",
     "@nuxt/eslint-config": "^0.1.1",
     "@nuxthq/ui": "^2.6.0",
