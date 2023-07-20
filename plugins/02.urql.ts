@@ -17,7 +17,6 @@ const ssrKey = "__URQL_DATA__";
 // see: https://github.com/gbicou/nuxt3-urql/blob/main/plugins/urql.ts
 export default defineNuxtPlugin((nuxt) => {
   const { $nhost } = useNuxtApp();
-  const accessToken = $nhost.auth.getAccessToken();
 
   // ssr client hydration
   const ssr = ssrExchange({
@@ -43,8 +42,8 @@ export default defineNuxtPlugin((nuxt) => {
       "Sec-WebSocket-Protocol": "graphql-ws",
     } as { [header: string]: string };
 
-    if (accessToken) {
-      resHeaders.authorization = `Bearer ${accessToken}`;
+    if ($nhost.auth.getAccessToken()) {
+      resHeaders.authorization = `Bearer ${$nhost.auth.getAccessToken()}`;
     }
 
     return resHeaders;
