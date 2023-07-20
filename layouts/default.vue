@@ -97,3 +97,9 @@ const extra = computed(() => [
     </UContainer>
   </div>
 </template>
+
+<style>
+body {
+  scrollbar-gutter: stable both-edges;
+}
+</style>
