@@ -41,7 +41,7 @@ const onSubmit = handleSubmit(async (values) => {
 
 const isAuthenticated = useAuthenticated();
 watchEffect(() => {
-  if (isAuthenticated.value) navigateTo("/");
+  if (isAuthenticated.value) navigateTo("/onboarding/profile");
 });
 
 const toast = useToast();
