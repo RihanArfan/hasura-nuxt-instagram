@@ -6,7 +6,7 @@
     }"
     class="w-full"
   >
-    <USkeleton class="pb-[100%]" />
+    <USkeleton :ui="{ rounded: '' }" class="pb-[100%]" />
 
     <template #footer>
       <div class="flex items-center gap-2">
