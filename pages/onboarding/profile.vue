@@ -51,7 +51,7 @@ const createProfile = async ({
   description?: string;
   isPrivate?: boolean;
 }) => {
-  const variables = { username, description, is_private: isPrivate };
+  const variables = { username, description, is_private: !!isPrivate };
   const { error } = await createProfileResult.executeMutation(variables);
   if (error) {
     return toast.add({
