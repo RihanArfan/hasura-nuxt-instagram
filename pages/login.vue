@@ -3,6 +3,7 @@ import { useAuthenticated } from "@nhost/vue";
 import { z } from "zod";
 
 useHead({ title: "Login" });
+definePageMeta({ layout: "steps" });
 
 const authEmail = useState<string | undefined>("authEmail", () => "");
 const schema = toTypedSchema(z.object({ email: z.string().email() }));

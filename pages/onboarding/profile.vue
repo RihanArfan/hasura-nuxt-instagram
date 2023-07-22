@@ -4,6 +4,7 @@ import { z } from "zod";
 import { graphql } from "~/gql";
 
 useHead({ title: "Create Profile" });
+definePageMeta({ layout: "steps" });
 const toast = useToast();
 
 const schema = toTypedSchema(

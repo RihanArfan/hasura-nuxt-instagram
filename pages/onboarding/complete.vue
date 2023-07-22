@@ -2,6 +2,8 @@
 import { useUserDisplayName } from "@nhost/vue";
 
 useHead({ title: "Welcome" });
+definePageMeta({ layout: "steps" });
+
 const userDisplayName = useUserDisplayName();
 const firstName = computed(() => userDisplayName.value?.split(" ")[0]);
 </script>

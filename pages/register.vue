@@ -3,6 +3,7 @@ import { useAuthenticated } from "@nhost/vue";
 import { z } from "zod";
 
 useHead({ title: "Create Account" });
+definePageMeta({ layout: "steps" });
 
 const authEmail = useState<string | undefined>("authEmail", () => "");
 
