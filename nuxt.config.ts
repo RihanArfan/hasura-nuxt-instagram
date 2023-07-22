@@ -13,6 +13,14 @@ export default defineNuxtConfig({
     },
   },
 
+  vite: {
+    vue: {
+      script: {
+        defineModel: true,
+      },
+    },
+  },
+
   experimental: {
     typedPages: true,
   },

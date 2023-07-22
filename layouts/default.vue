@@ -28,7 +28,7 @@ const links = computed(() => [
   },
   {
     icon: "i-heroicons-plus",
-    to: "/post",
+    click: () => (isCreatePostOpen.value = true),
   },
   {
     avatar: {
@@ -49,10 +49,20 @@ const extra = computed(() => [
     to: "https://github.com/RihanArfan/hasura-nuxt-instagram",
   },
 ]);
+
+// create post model handler
+const isCreatePostOpen = useCreatePostOpen();
+
+// drag and drop handler
+const dropZoneRef = ref<HTMLDivElement>();
+const { isOverDropZone } = useDropZone(dropZoneRef);
+watchEffect(() => {
+  if (isOverDropZone.value) isCreatePostOpen.value = isOverDropZone.value;
+});
 </script>
 
 <template>
-  <div>
+  <div ref="dropZoneRef">
     <Body class="overscroll-x-none" />
 
     <UContainer
@@ -95,6 +105,8 @@ const extra = computed(() => [
         />
       </div>
     </UContainer>
+
+    <CreatePost v-model:open="isCreatePostOpen" />
   </div>
 </template>
 

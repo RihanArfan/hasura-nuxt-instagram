@@ -13,6 +13,7 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n    mutation InsertPost($media_id: uuid, $caption: String) {\n      insert_posts_one(object: { media_id: $media_id, caption: $caption }) {\n        id\n        profile {\n          username\n        }\n      }\n    }\n  ": types.InsertPostDocument,
     "\n    mutation InsertProfile(\n      $username: String\n      $description: String\n      $is_private: Boolean\n    ) {\n      insert_profiles_one(\n        object: {\n          username: $username\n          description: $description\n          is_private: $is_private\n        }\n      ) {\n        id\n      }\n    }\n  ": types.InsertProfileDocument,
 };
 
@@ -30,6 +31,10 @@ const documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation InsertPost($media_id: uuid, $caption: String) {\n      insert_posts_one(object: { media_id: $media_id, caption: $caption }) {\n        id\n        profile {\n          username\n        }\n      }\n    }\n  "): (typeof documents)["\n    mutation InsertPost($media_id: uuid, $caption: String) {\n      insert_posts_one(object: { media_id: $media_id, caption: $caption }) {\n        id\n        profile {\n          username\n        }\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
