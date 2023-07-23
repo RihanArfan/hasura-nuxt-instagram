@@ -91,6 +91,13 @@ object_relationships:
   - name: defaultRoleByRole
     using:
       foreign_key_constraint_on: default_role
+  - name: profile
+    using:
+      foreign_key_constraint_on:
+        column: id
+        table:
+          name: profiles
+          schema: public
 array_relationships:
   - name: refreshTokens
     using:

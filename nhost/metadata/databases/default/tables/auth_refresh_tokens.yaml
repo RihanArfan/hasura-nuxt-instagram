@@ -28,6 +28,9 @@ configuration:
     update: updateAuthRefreshTokens
     update_by_pk: updateAuthRefreshToken
 object_relationships:
+  - name: refresh_token_type
+    using:
+      foreign_key_constraint_on: type
   - name: user
     using:
       foreign_key_constraint_on: user_id

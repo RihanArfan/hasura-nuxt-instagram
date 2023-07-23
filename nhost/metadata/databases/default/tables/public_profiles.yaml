@@ -1,0 +1,86 @@
+table:
+  name: profiles
+  schema: public
+object_relationships:
+  - name: account
+    using:
+      foreign_key_constraint_on: id
+  - name: posts
+    using:
+      manual_configuration:
+        column_mapping:
+          id: profile_id
+        insertion_order: null
+        remote_table:
+          name: posts
+          schema: public
+array_relationships:
+  - name: comments
+    using:
+      foreign_key_constraint_on:
+        column: profile_id
+        table:
+          name: comments
+          schema: public
+  - name: followers
+    using:
+      foreign_key_constraint_on:
+        column: following_profile_id
+        table:
+          name: following
+          schema: public
+  - name: following
+    using:
+      foreign_key_constraint_on:
+        column: follower_profile_id
+        table:
+          name: following
+          schema: public
+  - name: likes
+    using:
+      foreign_key_constraint_on:
+        column: profile_id
+        table:
+          name: likes
+          schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      set:
+        admin_approved: "false"
+        id: x-hasura-User-Id
+      columns:
+        - created_at
+        - description
+        - id
+        - is_private
+        - updated_at
+        - username
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - created_at
+        - description
+        - id
+        - is_private
+        - updated_at
+        - username
+      filter:
+        _or:
+          - id:
+              _eq: X-Hasura-User-Id
+          - admin_approved:
+              _eq: true
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - description
+        - is_private
+        - username
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null

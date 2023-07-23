@@ -49,3 +49,24 @@ object_relationships:
   - name: bucket
     using:
       foreign_key_constraint_on: bucket_id
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - bucket_id
+        - id
+        - mime_type
+        - name
+        - size
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - created_at
+        - etag
+        - id
+        - is_uploaded
+        - mime_type
+        - size
+      filter: {}

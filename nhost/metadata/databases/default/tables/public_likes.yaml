@@ -1,0 +1,39 @@
+table:
+  name: likes
+  schema: public
+object_relationships:
+  - name: post
+    using:
+      foreign_key_constraint_on: post_id
+  - name: profile
+    using:
+      foreign_key_constraint_on: profile_id
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      set:
+        profile_id: x-hasura-User-Id
+      columns:
+        - post_id
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - post_id
+        - profile_id
+        - created_at
+      filter:
+        post:
+          profile:
+            followers:
+              followerProfile:
+                id:
+                  _eq: X-Hasura-User-Id
+      allow_aggregations: true
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        profile_id:
+          _eq: X-Hasura-User-Id
