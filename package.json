@@ -2,15 +2,17 @@
   "name": "nuxt-app",
   "private": true,
   "scripts": {
+    "dev": "pnpm run '/(nuxt|codegen:watch|nhost)/'",
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "nuxt": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "codegen": "graphql-codegen",
     "codegen:watch": "graphql-codegen --watch",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "nhost": "nhost up"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^4.0.1",

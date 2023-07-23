@@ -4,6 +4,7 @@
     "auth",
     "deps",
     "onboarding",
-    "feed"
+    "feed",
+    "nhost"
   ]
 }
