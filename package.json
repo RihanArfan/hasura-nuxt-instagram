@@ -44,5 +44,10 @@
     "graphql-ws": "^5.14.0",
     "vee-validate": "^4.10.8",
     "zod": "^3.21.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "@simplewebauthn/browser": "^7.2.0"
+    }
   }
 }
