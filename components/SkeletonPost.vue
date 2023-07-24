@@ -1,3 +1,12 @@
+<script setup lang="ts">
+defineProps({
+  details: {
+    type: Boolean,
+    default: true,
+  },
+});
+</script>
+
 <template>
   <UCard
     :ui="{
@@ -8,7 +17,7 @@
   >
     <USkeleton :ui="{ rounded: '' }" class="pb-[100%]" />
 
-    <template #footer>
+    <template v-if="details" #footer>
       <div class="flex items-center gap-2">
         <USkeleton class="h-10 w-10" :ui="{ rounded: 'rounded-full' }" />
 
