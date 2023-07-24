@@ -17,7 +17,7 @@ const config: CodegenConfig = {
       },
     },
   },
-  documents: ["pages/**/*.vue", "components/**/*.vue", "composables/**/*.ts"],
+  documents: ["pages/**/*.vue", "components/**/*.vue", "layouts/**/*.vue"],
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {
     "./gql/": {
