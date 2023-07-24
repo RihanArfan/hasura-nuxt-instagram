@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { useUserAvatarUrl, useUserDisplayName } from "@nhost/vue";
+import { useAuthenticated, useUserData } from "@nhost/vue";
+import { useQuery } from "@urql/vue";
+import { graphql } from "~/gql";
 
 useHead({
   titleTemplate: (titleChunk) => {
@@ -10,9 +12,33 @@ useHead({
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
 
-const userAvatarUrl = useUserAvatarUrl();
-const userDisplayName = useUserDisplayName();
+const isAuthenticated = useAuthenticated();
+const userData = useUserData();
 
+// get my profile
+const { data: profileQueryResponse, fetching: isFetchingProfile } = useQuery({
+  query: graphql(`
+    query GetProfile($id: uuid!) {
+      profiles_by_pk(id: $id) {
+        username
+      }
+    }
+  `),
+  variables: { id: userData.value!?.id },
+  pause: !isAuthenticated.value,
+});
+
+const myProfile = computed(() => {
+  return profileQueryResponse.value?.profiles_by_pk;
+});
+
+// if no profile, redirect to onboarding
+watchEffect(() => {
+  if (!myProfile.value && isAuthenticated.value && !isFetchingProfile.value)
+    navigateTo("/onboarding/profile");
+});
+
+// navigation links
 const links = computed(() => [
   {
     icon: "i-heroicons-home",
@@ -32,10 +58,10 @@ const links = computed(() => [
   },
   {
     avatar: {
-      src: userAvatarUrl.value,
-      alt: userDisplayName.value,
+      src: userData.value?.avatarUrl,
+      alt: userData.value?.displayName,
     },
-    to: "/profile",
+    to: `/@${myProfile.value?.username}`,
   },
 ]);
 
