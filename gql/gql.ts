@@ -14,7 +14,9 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  */
 const documents = {
     "\n    mutation InsertPost($media_id: uuid, $caption: String) {\n      insert_posts_one(object: { media_id: $media_id, caption: $caption }) {\n        id\n        profile {\n          username\n        }\n      }\n    }\n  ": types.InsertPostDocument,
-    "\n    query GetProfile($id: uuid!) {\n      profiles_by_pk(id: $id) {\n        username\n      }\n    }\n  ": types.GetProfileDocument,
+    "\n    query GetProfileById($id: uuid!) {\n      profiles_by_pk(id: $id) {\n        username\n      }\n    }\n  ": types.GetProfileByIdDocument,
+    "\n    query GetProfile($username: String) {\n      profiles(where: { username: { _eq: $username } }) {\n        account {\n          displayName\n          avatarUrl\n        }\n        description\n        is_private\n        followers_aggregate {\n          aggregate {\n            count\n          }\n        }\n        following_aggregate {\n          aggregate {\n            count\n          }\n        }\n        posts {\n          id\n          media_id\n        }\n      }\n      posts_aggregate(where: { profile: { username: { _eq: $username } } }) {\n        aggregate {\n          count\n        }\n      }\n    }\n  ": types.GetProfileDocument,
+    "\n    query GetPost($id: uuid!) {\n      posts_by_pk(id: $id) {\n        media_id\n        caption\n        created_at\n        likes_aggregate {\n          aggregate {\n            count\n          }\n        }\n        profile {\n          username\n          account {\n            displayName\n            avatarUrl\n          }\n        }\n      }\n    }\n  ": types.GetPostDocument,
     "\n    mutation InsertProfile(\n      $username: String\n      $description: String\n      $is_private: Boolean\n    ) {\n      insert_profiles_one(\n        object: {\n          username: $username\n          description: $description\n          is_private: $is_private\n        }\n      ) {\n        id\n      }\n    }\n  ": types.InsertProfileDocument,
 };
 
@@ -39,7 +41,15 @@ export function graphql(source: "\n    mutation InsertPost($media_id: uuid, $cap
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query GetProfile($id: uuid!) {\n      profiles_by_pk(id: $id) {\n        username\n      }\n    }\n  "): (typeof documents)["\n    query GetProfile($id: uuid!) {\n      profiles_by_pk(id: $id) {\n        username\n      }\n    }\n  "];
+export function graphql(source: "\n    query GetProfileById($id: uuid!) {\n      profiles_by_pk(id: $id) {\n        username\n      }\n    }\n  "): (typeof documents)["\n    query GetProfileById($id: uuid!) {\n      profiles_by_pk(id: $id) {\n        username\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query GetProfile($username: String) {\n      profiles(where: { username: { _eq: $username } }) {\n        account {\n          displayName\n          avatarUrl\n        }\n        description\n        is_private\n        followers_aggregate {\n          aggregate {\n            count\n          }\n        }\n        following_aggregate {\n          aggregate {\n            count\n          }\n        }\n        posts {\n          id\n          media_id\n        }\n      }\n      posts_aggregate(where: { profile: { username: { _eq: $username } } }) {\n        aggregate {\n          count\n        }\n      }\n    }\n  "): (typeof documents)["\n    query GetProfile($username: String) {\n      profiles(where: { username: { _eq: $username } }) {\n        account {\n          displayName\n          avatarUrl\n        }\n        description\n        is_private\n        followers_aggregate {\n          aggregate {\n            count\n          }\n        }\n        following_aggregate {\n          aggregate {\n            count\n          }\n        }\n        posts {\n          id\n          media_id\n        }\n      }\n      posts_aggregate(where: { profile: { username: { _eq: $username } } }) {\n        aggregate {\n          count\n        }\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query GetPost($id: uuid!) {\n      posts_by_pk(id: $id) {\n        media_id\n        caption\n        created_at\n        likes_aggregate {\n          aggregate {\n            count\n          }\n        }\n        profile {\n          username\n          account {\n            displayName\n            avatarUrl\n          }\n        }\n      }\n    }\n  "): (typeof documents)["\n    query GetPost($id: uuid!) {\n      posts_by_pk(id: $id) {\n        media_id\n        caption\n        created_at\n        likes_aggregate {\n          aggregate {\n            count\n          }\n        }\n        profile {\n          username\n          account {\n            displayName\n            avatarUrl\n          }\n        }\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
