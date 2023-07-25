@@ -18,7 +18,7 @@ const userData = useUserData();
 // get my profile
 const { data: profileQueryResponse, fetching: isFetchingProfile } = useQuery({
   query: graphql(`
-    query GetProfile($id: uuid!) {
+    query GetProfileById($id: uuid!) {
       profiles_by_pk(id: $id) {
         username
       }
@@ -85,6 +85,21 @@ const { isOverDropZone } = useDropZone(dropZoneRef);
 watchEffect(() => {
   if (isOverDropZone.value) isCreatePostOpen.value = isOverDropZone.value;
 });
+
+// page width
+const route = useRoute();
+
+const containerWidth = computed(() => {
+  const layoutWidth = route.meta.layoutWidth;
+  if (layoutWidth === "xl") return "max-w-4xl";
+  return "max-w-2xl";
+});
+
+const navSpacing = computed(() => {
+  const layoutWidth = route.meta.layoutWidth;
+  if (layoutWidth === "xl") return "ml-3 border-l  pl-2";
+  return "ml-2";
+});
 </script>
 
 <template>
@@ -93,19 +108,22 @@ watchEffect(() => {
 
     <UContainer
       :ui="{
-        padding: 'pl-4 pr-2 sm:px-6',
-        constrained: 'max-w-xl xl:max-w-2xl',
+        padding: 'pl-4 pr-2 sm:px-6 ',
+        constrained: containerWidth,
       }"
-      class="flex"
+      class="flex transition-all"
     >
       <div class="grow py-3">
         <slot />
       </div>
 
-      <div class="sticky top-0 ml-2 flex h-screen flex-col py-3">
+      <div
+        class="sticky top-0 flex h-screen flex-col border-l-gray-200 transition-all dark:border-l-gray-800"
+        :class="navSpacing"
+      >
         <NuxtLink to="/">
           <h1
-            class="mb-2 rounded-full text-center text-4xl font-bold"
+            class="mb-2 mt-6 rounded-full text-center text-4xl font-bold"
             title="Social"
           >
             S
@@ -115,7 +133,7 @@ watchEffect(() => {
         <UVerticalNavigation
           :links="links"
           :ui="{
-            padding: 'p-2',
+            padding: 'p-2 my-3',
             icon: { base: 'flex-shrink-0 w-8 h-8 mx-2 my-1 font-bolder' },
             avatar: { size: 'lg' },
           }"
@@ -125,7 +143,7 @@ watchEffect(() => {
           class="mt-auto"
           :links="extra"
           :ui="{
-            padding: 'p-2',
+            padding: 'p-2 my-3',
             icon: { base: 'flex-shrink-0 w-8 h-8 mx-2 my-1' },
           }"
         />
