@@ -20,6 +20,7 @@ const { data: profileQueryResponse, fetching: isFetchingProfile } = useQuery({
   query: graphql(`
     query GetProfileById($id: uuid!) {
       profiles_by_pk(id: $id) {
+        id
         username
       }
     }
@@ -92,7 +93,7 @@ const route = useRoute();
 const containerWidth = computed(() => {
   const layoutWidth = route.meta.layoutWidth;
   if (layoutWidth === "xl") return "max-w-4xl";
-  return "max-w-2xl";
+  return "max-w-2xl md:px-4";
 });
 
 const navSpacing = computed(() => {
