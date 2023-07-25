@@ -4,7 +4,7 @@ import { useNhostClient } from "@nhost/vue";
 
 interface Post {
   media_id: string;
-  created_at: string;
+  created_at?: string;
   caption?: string | null;
 }
 
