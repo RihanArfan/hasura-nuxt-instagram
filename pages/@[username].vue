@@ -45,6 +45,7 @@ const { data, fetching } = useQuery({
 });
 
 const profile = computed(() => data.value?.profiles.at(0));
+const username = computed(() => route.params.username);
 </script>
 
 <template>
@@ -61,10 +62,10 @@ const profile = computed(() => data.value?.profiles.at(0));
 
       <div class="flex grow flex-col gap-4">
         <h1 class="text-2xl font-bold">
-          {{ profile?.account.displayName ?? `@${$route.params.username}` }}
+          {{ profile?.account.displayName ?? `@${username}` }}
 
           <UBadge v-if="profile?.account.displayName" color="black">
-            @{{ $route.params.username }}
+            @{{ username }}
           </UBadge>
         </h1>
 
@@ -111,12 +112,12 @@ const profile = computed(() => data.value?.profiles.at(0));
         <NuxtLink
           v-for="post in profile?.posts"
           :key="post.id"
-          :to="`/@${$route.params.username}/${post.id}`"
+          :to="`/@${username}/${post.id}`"
         >
           <Post
             :post="{ media_id: post.media_id }"
             :profile="{
-              username: $route.params.username,
+              username: username,
               account: {
                 displayName: profile?.account.displayName!,
                 avatarUrl: profile?.account.avatarUrl,
