@@ -54,7 +54,8 @@ const profile = computed(() => data.value?.profiles.at(0));
       <UAvatar
         size="5xl"
         :src="profile?.account.avatarUrl"
-        :ui="{ size: { '5xl': 'h-24 w-24 md:h-48 md:w-48 text-4xl' } }"
+        :alt="profile?.account.displayName"
+        :ui="{ size: { '5xl': 'h-24 w-24 md:h-48 md:w-48 text-6xl' } }"
       />
 
       <div class="flex grow flex-col gap-4">
