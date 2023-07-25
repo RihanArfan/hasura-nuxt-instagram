@@ -5,15 +5,6 @@ object_relationships:
   - name: account
     using:
       foreign_key_constraint_on: id
-  - name: posts
-    using:
-      manual_configuration:
-        column_mapping:
-          id: profile_id
-        insertion_order: null
-        remote_table:
-          name: posts
-          schema: public
 array_relationships:
   - name: comments
     using:
@@ -42,6 +33,15 @@ array_relationships:
         column: profile_id
         table:
           name: likes
+          schema: public
+  - name: posts
+    using:
+      manual_configuration:
+        column_mapping:
+          id: profile_id
+        insertion_order: null
+        remote_table:
+          name: posts
           schema: public
 insert_permissions:
   - role: user
