@@ -20,7 +20,11 @@ insert_permissions:
 select_permissions:
   - role: user
     permission:
-      columns: []
+      columns:
+        - follower_profile_id
+        - following_profile_id
+        - is_accepted
+        - updated_at
       filter:
         _or:
           - follower_profile_id:
@@ -34,3 +38,4 @@ select_permissions:
                 - followers:
                     follower_profile_id:
                       _eq: X-Hasura-User-Id
+      allow_aggregations: true
