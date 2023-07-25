@@ -115,6 +115,7 @@ const createPost = async () => {
     createPostResult.data.value?.insert_posts_one?.profile?.username;
   const postId = createPostResult.data.value?.insert_posts_one?.id;
 
+  isOpen.value = false;
   navigateTo(`@${username}/${postId}`);
 };
 
