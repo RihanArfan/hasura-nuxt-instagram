@@ -1,4 +1,6 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
+import { addTypenameSelectionDocumentTransform } from "@graphql-codegen/client-preset";
+
 import { NhostClient } from "@nhost/vue";
 import * as dotenv from "dotenv";
 
@@ -25,6 +27,7 @@ const config: CodegenConfig = {
       config: {
         useTypeImports: true,
       },
+      documentTransforms: [addTypenameSelectionDocumentTransform],
     },
     "./gql/introspection.ts": {
       plugins: ["urql-introspection"],
