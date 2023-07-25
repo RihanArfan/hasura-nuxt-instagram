@@ -15,14 +15,15 @@
     "nhost": "nhost up"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^4.0.1",
-    "@graphql-codegen/client-preset": "^4.0.1",
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
     "@graphql-codegen/urql-introspection": "^2.2.1",
     "@iconify-json/fa6-brands": "^1.1.11",
     "@nuxt/devtools": "^0.7.1",
     "@nuxt/eslint-config": "^0.1.1",
     "@nuxthq/ui": "^2.6.0",
-    "@types/node": "^20.4.4",
+    "@parcel/watcher": "^2.2.0",
+    "@types/node": "^20.4.5",
     "@urql/exchange-graphcache": "^6.2.0",
     "@vee-validate/nuxt": "^4.10.8",
     "@vueuse/components": "^10.2.1",
@@ -49,5 +50,8 @@
     "overrides": {
       "@simplewebauthn/browser": "^7.2.0"
     }
+  },
+  "peerDependencies": {
+    "@parcel/watcher": "^2.2.0"
   }
 }
