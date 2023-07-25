@@ -39,6 +39,14 @@ const { presignedUrl, error } = await nhost.storage.getPresignedUrl({
   height: 512,
   width: 512,
 });
+
+if (error) {
+  useErrorToast({
+    id: error?.name ?? "graphql-error",
+    title: error?.name,
+    description: error?.message,
+  });
+}
 </script>
 
 <template>
