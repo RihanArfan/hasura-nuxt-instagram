@@ -50,6 +50,10 @@ const username = computed(() => route.params.username);
 
 <template>
   <div>
+    <Head>
+      <Title>{{ profile?.account.displayName ?? `@${username}` }}</Title>
+    </Head>
+
     <div
       class="my-6 flex items-center justify-between gap-8 sm:my-16 md:mx-16 md:gap-16"
     >

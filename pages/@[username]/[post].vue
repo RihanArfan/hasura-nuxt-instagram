@@ -41,6 +41,15 @@ const isLoading = computed(() => fetching.value);
 
 <template>
   <UModal v-model="isOpen">
+    <Head>
+      <Title v-if="!data?.posts_by_pk?.profile?.account.displayName">
+        View Post
+      </Title>
+      <Title v-else>
+        {{ data?.posts_by_pk?.profile?.account.displayName }}'s post
+      </Title>
+    </Head>
+
     <SkeletonPost v-if="isLoading" :details="true" />
     <Post
       v-else-if="data?.posts_by_pk?.media_id"
