@@ -93,6 +93,14 @@ const profile = computed(() => data.value?.profiles.at(0));
       </div>
     </div>
 
+    <div
+      v-if="!profile && !fetching"
+      class="flex h-32 flex-col items-center justify-center text-center text-xl"
+    >
+      <UIcon name="i-heroicons-question-mark-circle" class="mb-2 text-6xl" />
+      <p>Profile does not exist</p>
+    </div>
+
     <div class="grid gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-2">
       <template v-if="fetching">
         <template v-for="x in 6" :key="x">
