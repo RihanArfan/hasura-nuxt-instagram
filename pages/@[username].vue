@@ -12,6 +12,7 @@ const { data, fetching } = useQuery({
   query: graphql(`
     query GetProfile($username: String) {
       profiles(where: { username: { _eq: $username } }) {
+        id
         account {
           displayName
           avatarUrl
@@ -28,14 +29,14 @@ const { data, fetching } = useQuery({
             count
           }
         }
+        posts_aggregate {
+          aggregate {
+            count
+          }
+        }
         posts {
           id
           media_id
-        }
-      }
-      posts_aggregate(where: { profile: { username: { _eq: $username } } }) {
-        aggregate {
-          count
         }
       }
     }
@@ -52,10 +53,10 @@ const profile = computed(() => data.value?.profiles.at(0));
       class="my-6 flex items-center justify-between gap-8 sm:my-16 md:mx-16 md:gap-16"
     >
       <UAvatar
-        size="5xl"
+        size="3xl"
         :src="profile?.account.avatarUrl"
         :alt="profile?.account.displayName"
-        :ui="{ size: { '5xl': 'h-24 w-24 md:h-48 md:w-48 text-6xl' } }"
+        :ui="{ size: { '3xl': 'h-24 w-24 md:h-48 md:w-48 text-6xl' } }"
       />
 
       <div class="flex grow flex-col gap-4">
@@ -70,7 +71,7 @@ const profile = computed(() => data.value?.profiles.at(0));
         <div class="mb-2 flex justify-between">
           <ProfileStat
             :name="'Posts'"
-            :value="data?.posts_aggregate.aggregate?.count ?? '0'"
+            :value="profile?.posts_aggregate.aggregate?.count ?? '0'"
           />
           <ProfileStat
             :name="'Followers'"
