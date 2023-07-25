@@ -36,34 +36,31 @@ const { data, fetching } = useQuery({
   variables: { id: route.params.post },
 });
 
+const post = computed(() => data.value?.posts_by_pk);
 const isLoading = computed(() => fetching.value);
 </script>
 
 <template>
   <UModal v-model="isOpen">
     <Head>
-      <Title v-if="!data?.posts_by_pk?.profile?.account.displayName">
-        View Post
-      </Title>
-      <Title v-else>
-        {{ data?.posts_by_pk?.profile?.account.displayName }}'s post
-      </Title>
+      <Title v-if="!post?.profile?.account.displayName">View Post</Title>
+      <Title v-else>{{ post?.profile?.account.displayName }}'s post</Title>
     </Head>
 
     <SkeletonPost v-if="isLoading" :details="true" />
     <Post
-      v-else-if="data?.posts_by_pk?.media_id"
+      v-else-if="post?.media_id"
       :profile="{
-        username: data?.posts_by_pk?.profile?.username!,
+        username: post?.profile?.username!,
         account: {
-          displayName: data?.posts_by_pk?.profile?.account.displayName!,
-          avatarUrl: data?.posts_by_pk?.profile?.account.avatarUrl,
+          displayName: post?.profile?.account.displayName!,
+          avatarUrl: post?.profile?.account.avatarUrl,
         },
       }"
       :post="{
-        media_id: data?.posts_by_pk?.media_id,
-        caption: data?.posts_by_pk?.caption,
-        created_at: data?.posts_by_pk?.created_at,
+        media_id: post?.media_id,
+        caption: post?.caption,
+        created_at: post?.created_at,
       }"
     />
     <div v-else>Could not load post</div>
