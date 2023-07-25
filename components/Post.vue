@@ -27,7 +27,11 @@ const props = withDefaults(
   },
 );
 
-const timeAgo = useTimeAgo(props.post.created_at);
+const timeAgo = ref();
+watchEffect(() => {
+  if (!props.post.created_at) return;
+  timeAgo.value = useTimeAgo(props.post.created_at);
+});
 
 const { nhost } = useNhostClient();
 const { presignedUrl, error } = await nhost.storage.getPresignedUrl({
