@@ -1,9 +1,40 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import type { Post } from "~/types";
+import { useNhostClient } from "@nhost/vue";
 
-const props = defineProps<Post>();
-const timeAgo = useTimeAgo(props.posted_at);
+interface Post {
+  media_id: string;
+  created_at: string;
+  caption?: string | null;
+}
+
+interface Profile {
+  username: string;
+  account: {
+    displayName: string;
+    avatarUrl?: string;
+  };
+}
+
+const props = withDefaults(
+  defineProps<{
+    details: boolean;
+    profile: Profile;
+    post: Post;
+  }>(),
+  {
+    details: true,
+  },
+);
+
+const timeAgo = useTimeAgo(props.post.created_at);
+
+const { nhost } = useNhostClient();
+const { presignedUrl, error } = await nhost.storage.getPresignedUrl({
+  fileId: props.post.media_id,
+  height: 512,
+  width: 512,
+});
 </script>
 
 <template>
@@ -17,22 +48,23 @@ const timeAgo = useTimeAgo(props.posted_at);
       footer: { padding: 'p-2' },
     }"
   >
+    <USkeleton v-if="!presignedUrl" :ui="{ rounded: '' }" class="pb-[100%]" />
     <img
-      :src="photos[0]"
+      v-else
+      :src="presignedUrl.url"
       class="w-full"
       width="500"
       height="500"
-      :alt="`${user.username}'s post'`"
+      :alt="`${profile.account.displayName}'s post'`"
       loading="lazy"
     />
 
-    <template #footer>
+    <template v-if="details" #footer>
       <div class="flex gap-2">
         <UAvatar
-          :src="user.avatar"
+          :alt="`${profile.account.displayName}'s avatar`"
           size="md"
           class="aspect-square shrink-0"
-          :alt="`${user.name}'s avatar`"
         />
 
         <div class="flex flex-col">
@@ -40,13 +72,15 @@ const timeAgo = useTimeAgo(props.posted_at);
             <span
               class="text-md font-bold text-neutral-700 dark:text-neutral-300"
             >
-              {{ user.name }}
+              {{ profile.username }}
             </span>
-            <span>@{{ user.username }}</span>
-            <time :datetime="posted_at.toString()">{{ timeAgo }}</time>
+            <span>@{{ profile.username }}</span>
+            <time :datetime="post.created_at">{{ timeAgo }}</time>
           </div>
 
-          <p class="text-neutral-900 dark:text-neutral-100">{{ caption }}</p>
+          <p v-if="post.caption" class="text-neutral-900 dark:text-neutral-100">
+            {{ post.caption }}
+          </p>
         </div>
       </div>
     </template>
