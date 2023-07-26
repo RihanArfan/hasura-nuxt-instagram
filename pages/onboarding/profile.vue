@@ -5,7 +5,6 @@ import { graphql } from "~/gql";
 
 useHead({ title: "Create Profile" });
 definePageMeta({ layout: "steps" });
-const toast = useToast();
 
 const schema = toTypedSchema(
   z.object({
@@ -54,15 +53,7 @@ const createProfile = async ({
 }) => {
   const variables = { username, description, is_private: !!isPrivate };
   const { error } = await createProfileResult.executeMutation(variables);
-  if (error) {
-    return toast.add({
-      id: error?.name,
-      title: "Something went wrong",
-      description: error?.message,
-      color: "red",
-      icon: "i-heroicons-exclamation-circle",
-    });
-  }
+  if (error) useErrorToast({ id: error?.name, description: error?.message });
 
   navigateTo("/onboarding/complete");
 };

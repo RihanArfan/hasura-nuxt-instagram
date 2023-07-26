@@ -45,16 +45,9 @@ watchEffect(() => {
   if (isAuthenticated.value) navigateTo("/onboarding/profile");
 });
 
-const toast = useToast();
-watch(error, (newError) => {
-  if (!newError) return;
-  toast.add({
-    id: newError.error,
-    title: "Something went wrong",
-    description: newError.message,
-    color: "red",
-    icon: "i-heroicons-exclamation-circle",
-  });
+watchEffect(() => {
+  if (!error.value) return;
+  useErrorToast({ id: error?.value.error, description: error?.value.message });
 });
 </script>
 
