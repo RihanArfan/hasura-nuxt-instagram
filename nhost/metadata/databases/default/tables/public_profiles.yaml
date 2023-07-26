@@ -43,6 +43,19 @@ array_relationships:
         remote_table:
           name: posts
           schema: public
+computed_fields:
+  - name: is_following
+    definition:
+      function:
+        name: is_following_user
+        schema: public
+      session_argument: hasura_session
+  - name: is_requested_following
+    definition:
+      function:
+        name: is_requested_following_user
+        schema: public
+      session_argument: hasura_session
 insert_permissions:
   - role: user
     permission:
@@ -68,6 +81,9 @@ select_permissions:
         - is_private
         - updated_at
         - username
+      computed_fields:
+        - is_following
+        - is_requested_following
       filter:
         _or:
           - id:

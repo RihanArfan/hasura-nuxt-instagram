@@ -21,6 +21,7 @@ select_permissions:
   - role: user
     permission:
       columns:
+        - created_at
         - follower_profile_id
         - following_profile_id
         - is_accepted
@@ -39,3 +40,24 @@ select_permissions:
                     follower_profile_id:
                       _eq: X-Hasura-User-Id
       allow_aggregations: true
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - is_accepted
+      filter:
+        _or:
+          - follower_profile_id:
+              _eq: X-Hasura-User-Id
+          - following_profile_id:
+              _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        _or:
+          - follower_profile_id:
+              _eq: X-Hasura-User-Id
+          - following_profile_id:
+              _eq: X-Hasura-User-Id
