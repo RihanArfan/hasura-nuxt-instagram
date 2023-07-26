@@ -65,9 +65,11 @@ const createFollowerResult = useMutation(
 );
 
 const isRequested = ref(false);
-const isAccepted = ref(false);
+const isFollowing = ref(false);
 const followProfile = async () => {
-  isRequested.value = true;
+  profile.value?.is_private
+    ? (isRequested.value = true)
+    : (isFollowing.value = true);
 
   const variables = { profile: profile.value?.id };
   const { data, error } = await createFollowerResult.executeMutation(variables);
@@ -75,7 +77,7 @@ const followProfile = async () => {
 
   if (!data?.insert_following_one?.is_accepted) return;
   isAccepted.value = true;
-  isRequested.value = false;
+  isFollowing.value = false;
 };
 
 // unfollow or cancel request
@@ -96,7 +98,7 @@ const isUnfollowed = ref(false);
 const unfollowProfile = async () => {
   isUnfollowed.value = true;
   isRequested.value = false;
-  isAccepted.value = false;
+  isFollowing.value = false;
 
   const variables = {
     profile: profile.value?.id,
@@ -150,7 +152,7 @@ const unfollowProfile = async () => {
 
           <template v-if="!isMyProfile">
             <UButtonGroup
-              v-if="(profile?.is_following && !isUnfollowed) || isAccepted"
+              v-if="(profile?.is_following && !isUnfollowed) || isFollowing"
               size="sm"
             >
               <UButton label="Following" color="gray" disabled />
