@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
+import { useUserData } from "@nhost/vue";
+import { useQuery, useMutation } from "@urql/vue";
 import { graphql } from "~/gql";
 
 definePageMeta({
@@ -7,6 +8,7 @@ definePageMeta({
 });
 
 const route = useRoute();
+const userData = useUserData();
 
 const { data, fetching } = useQuery({
   query: graphql(`
@@ -19,12 +21,14 @@ const { data, fetching } = useQuery({
         }
         description
         is_private
-        followers_aggregate {
+        is_following
+        is_requested_following
+        followers_aggregate(where: { is_accepted: { _eq: true } }) {
           aggregate {
             count
           }
         }
-        following_aggregate {
+        following_aggregate(where: { is_accepted: { _eq: true } }) {
           aggregate {
             count
           }
@@ -41,11 +45,65 @@ const { data, fetching } = useQuery({
       }
     }
   `),
-  variables: { username: route.params.username },
+  variables: { username: route.params.username! },
 });
 
 const profile = computed(() => data.value?.profiles.at(0));
 const username = computed(() => route.params.username);
+const isMyProfile = computed(() => profile.value?.id === userData.value?.id);
+
+// follow
+const createFollowerResult = useMutation(
+  graphql(`
+    mutation FollowProfile($profile: uuid!) {
+      insert_following_one(object: { following_profile_id: $profile }) {
+        is_accepted
+      }
+    }
+  `),
+);
+
+const isRequested = ref(false);
+const isAccepted = ref(false);
+const followProfile = async () => {
+  isRequested.value = true;
+
+  const variables = { profile: profile.value?.id };
+  const { data, error } = await createFollowerResult.executeMutation(variables);
+  if (error) useErrorToast({ id: error?.name, description: error?.message });
+
+  if (!data?.insert_following_one?.is_accepted) return;
+  isAccepted.value = true
+  isRequested.value = false;
+};
+
+// unfollow or cancel request
+const deleteFollowerResult = useMutation(
+  graphql(`
+    mutation UnfollowProfile($profile: uuid!, $myProfile: uuid!) {
+      delete_following_by_pk(
+        follower_profile_id: $myProfile
+        following_profile_id: $profile
+      ) {
+        created_at
+      }
+    }
+  `),
+);
+
+const isUnfollowed = ref(false);
+const unfollowProfile = async () => {
+  isUnfollowed.value = true;
+  isRequested.value = false;
+  isAccepted.value = false;
+
+  const variables = {
+    profile: profile.value?.id,
+    myProfile: userData.value?.id,
+  };
+  const { error } = await deleteFollowerResult.executeMutation(variables);
+  if (error) useErrorToast({ id: error?.name, description: error?.message });
+};
 </script>
 
 <template>
@@ -65,13 +123,56 @@ const username = computed(() => route.params.username);
       />
 
       <div class="flex grow flex-col gap-4">
-        <h1 class="text-2xl font-bold">
-          {{ profile?.account.displayName ?? `@${username}` }}
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <h1 class="text-2xl font-bold">
+              {{ profile?.account.displayName ?? `@${username}` }}
+            </h1>
 
-          <UBadge v-if="profile?.account.displayName" color="black">
-            @{{ username }}
-          </UBadge>
-        </h1>
+            <p
+              v-if="profile?.account.displayName"
+              class="pt-1 text-xs font-semibold"
+            >
+              @{{ username }}
+            </p>
+          </div>
+
+          <template v-if="!isMyProfile">
+            <UButtonGroup
+              v-if="profile?.is_following && !isUnfollowed || isAccepted"
+              size="sm"
+            >
+              <UButton label="Following" color="gray" disabled />
+              <UButton
+                icon="i-heroicons-x-mark-20-solid"
+                color="gray"
+                @click="unfollowProfile"
+              />
+            </UButtonGroup>
+
+            <UButtonGroup
+              v-else-if="profile?.is_requested_following || isRequested"
+              size="sm"
+            >
+              <UButton label="Requested" color="white" disabled />
+              <UButton
+                icon="i-heroicons-x-mark-20-solid"
+                color="gray"
+                @click="unfollowProfile"
+              />
+            </UButtonGroup>
+
+            <UButton
+              v-else-if="
+                !profile?.is_following && !profile?.is_requested_following || isUnfollowed
+              "
+              class="px-6"
+              @click="followProfile"
+            >
+              Follow
+            </UButton>
+          </template>
+        </div>
 
         <div class="mb-2 flex justify-between">
           <ProfileStat
@@ -128,6 +229,7 @@ const username = computed(() => route.params.username);
               },
             }"
             :details="false"
+            :link="false"
           />
         </NuxtLink>
       </template>

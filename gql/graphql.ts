@@ -5008,7 +5008,6 @@ export type Profiles = {
   __typename?: 'profiles';
   /** An object relationship */
   account: Users;
-  admin_approved: Scalars['Boolean']['output'];
   /** An array relationship */
   comments: Array<Comments>;
   /** An aggregate relationship */
@@ -5024,7 +5023,12 @@ export type Profiles = {
   /** An aggregate relationship */
   following_aggregate: Following_Aggregate;
   id: Scalars['uuid']['output'];
+  is_admin_approved: Scalars['Boolean']['output'];
+  /** A computed field, executes function "is_following_user" */
+  is_following?: Maybe<Scalars['Boolean']['output']>;
   is_private: Scalars['Boolean']['output'];
+  /** A computed field, executes function "is_requested_following_user" */
+  is_requested_following?: Maybe<Scalars['Boolean']['output']>;
   /** An array relationship */
   likes: Array<Likes>;
   /** An aggregate relationship */
@@ -5165,7 +5169,6 @@ export type Profiles_Bool_Exp = {
   _not?: InputMaybe<Profiles_Bool_Exp>;
   _or?: InputMaybe<Array<Profiles_Bool_Exp>>;
   account?: InputMaybe<Users_Bool_Exp>;
-  admin_approved?: InputMaybe<Boolean_Comparison_Exp>;
   comments?: InputMaybe<Comments_Bool_Exp>;
   comments_aggregate?: InputMaybe<Comments_Aggregate_Bool_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -5175,7 +5178,10 @@ export type Profiles_Bool_Exp = {
   following?: InputMaybe<Following_Bool_Exp>;
   following_aggregate?: InputMaybe<Following_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  is_admin_approved?: InputMaybe<Boolean_Comparison_Exp>;
+  is_following?: InputMaybe<Boolean_Comparison_Exp>;
   is_private?: InputMaybe<Boolean_Comparison_Exp>;
+  is_requested_following?: InputMaybe<Boolean_Comparison_Exp>;
   likes?: InputMaybe<Likes_Bool_Exp>;
   likes_aggregate?: InputMaybe<Likes_Aggregate_Bool_Exp>;
   posts?: InputMaybe<Posts_Bool_Exp>;
@@ -5195,13 +5201,13 @@ export enum Profiles_Constraint {
 /** input type for inserting data into table "profiles" */
 export type Profiles_Insert_Input = {
   account?: InputMaybe<Users_Obj_Rel_Insert_Input>;
-  admin_approved?: InputMaybe<Scalars['Boolean']['input']>;
   comments?: InputMaybe<Comments_Arr_Rel_Insert_Input>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   followers?: InputMaybe<Following_Arr_Rel_Insert_Input>;
   following?: InputMaybe<Following_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_admin_approved?: InputMaybe<Scalars['Boolean']['input']>;
   is_private?: InputMaybe<Scalars['Boolean']['input']>;
   likes?: InputMaybe<Likes_Arr_Rel_Insert_Input>;
   posts?: InputMaybe<Posts_Arr_Rel_Insert_Input>;
@@ -5255,14 +5261,16 @@ export type Profiles_On_Conflict = {
 /** Ordering options when selecting data from "profiles". */
 export type Profiles_Order_By = {
   account?: InputMaybe<Users_Order_By>;
-  admin_approved?: InputMaybe<Order_By>;
   comments_aggregate?: InputMaybe<Comments_Aggregate_Order_By>;
   created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   followers_aggregate?: InputMaybe<Following_Aggregate_Order_By>;
   following_aggregate?: InputMaybe<Following_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
+  is_admin_approved?: InputMaybe<Order_By>;
+  is_following?: InputMaybe<Order_By>;
   is_private?: InputMaybe<Order_By>;
+  is_requested_following?: InputMaybe<Order_By>;
   likes_aggregate?: InputMaybe<Likes_Aggregate_Order_By>;
   posts_aggregate?: InputMaybe<Posts_Aggregate_Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -5277,13 +5285,13 @@ export type Profiles_Pk_Columns_Input = {
 /** select columns of table "profiles" */
 export enum Profiles_Select_Column {
   /** column name */
-  AdminApproved = 'admin_approved',
-  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Description = 'description',
   /** column name */
   Id = 'id',
+  /** column name */
+  IsAdminApproved = 'is_admin_approved',
   /** column name */
   IsPrivate = 'is_private',
   /** column name */
@@ -5294,10 +5302,10 @@ export enum Profiles_Select_Column {
 
 /** input type for updating data in table "profiles" */
 export type Profiles_Set_Input = {
-  admin_approved?: InputMaybe<Scalars['Boolean']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_admin_approved?: InputMaybe<Scalars['Boolean']['input']>;
   is_private?: InputMaybe<Scalars['Boolean']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
@@ -5313,10 +5321,10 @@ export type Profiles_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Profiles_Stream_Cursor_Value_Input = {
-  admin_approved?: InputMaybe<Scalars['Boolean']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_admin_approved?: InputMaybe<Scalars['Boolean']['input']>;
   is_private?: InputMaybe<Scalars['Boolean']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
@@ -5325,13 +5333,13 @@ export type Profiles_Stream_Cursor_Value_Input = {
 /** update columns of table "profiles" */
 export enum Profiles_Update_Column {
   /** column name */
-  AdminApproved = 'admin_approved',
-  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Description = 'description',
   /** column name */
   Id = 'id',
+  /** column name */
+  IsAdminApproved = 'is_admin_approved',
   /** column name */
   IsPrivate = 'is_private',
   /** column name */
@@ -7230,28 +7238,55 @@ export type InsertPostMutationVariables = Exact<{
 }>;
 
 
-export type InsertPostMutation = { __typename?: 'mutation_root', insert_posts_one?: { __typename?: 'posts', id: any, profile?: { __typename?: 'profiles', username: string } | null } | null };
+export type InsertPostMutation = { __typename: 'mutation_root', insert_posts_one?: { __typename: 'posts', id: any, profile?: { __typename: 'profiles', username: string } | null } | null };
 
 export type GetProfileByIdQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
 }>;
 
 
-export type GetProfileByIdQuery = { __typename?: 'query_root', profiles_by_pk?: { __typename?: 'profiles', username: string } | null };
+export type GetProfileByIdQuery = { __typename: 'query_root', profiles_by_pk?: { __typename: 'profiles', id: any, username: string } | null };
 
 export type GetProfileQueryVariables = Exact<{
   username?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetProfileQuery = { __typename?: 'query_root', profiles: Array<{ __typename?: 'profiles', id: any, description: string, is_private: boolean, account: { __typename?: 'users', displayName: string, avatarUrl: string }, followers_aggregate: { __typename?: 'following_aggregate', aggregate?: { __typename?: 'following_aggregate_fields', count: number } | null }, following_aggregate: { __typename?: 'following_aggregate', aggregate?: { __typename?: 'following_aggregate_fields', count: number } | null }, posts_aggregate: { __typename?: 'posts_aggregate', aggregate?: { __typename?: 'posts_aggregate_fields', count: number } | null }, posts: Array<{ __typename?: 'posts', id: any, media_id: any }> }> };
+export type GetProfileQuery = { __typename: 'query_root', profiles: Array<{ __typename: 'profiles', id: any, description: string, is_private: boolean, is_following?: boolean | null, is_requested_following?: boolean | null, account: { __typename: 'users', displayName: string, avatarUrl: string }, followers_aggregate: { __typename: 'following_aggregate', aggregate?: { __typename: 'following_aggregate_fields', count: number } | null }, following_aggregate: { __typename: 'following_aggregate', aggregate?: { __typename: 'following_aggregate_fields', count: number } | null }, posts_aggregate: { __typename: 'posts_aggregate', aggregate?: { __typename: 'posts_aggregate_fields', count: number } | null }, posts: Array<{ __typename: 'posts', id: any, media_id: any }> }> };
+
+export type FollowProfileMutationVariables = Exact<{
+  profile: Scalars['uuid']['input'];
+}>;
+
+
+export type FollowProfileMutation = { __typename: 'mutation_root', insert_following_one?: { __typename: 'following', is_accepted: boolean } | null };
+
+export type UnfollowProfileMutationVariables = Exact<{
+  profile: Scalars['uuid']['input'];
+  myProfile: Scalars['uuid']['input'];
+}>;
+
+
+export type UnfollowProfileMutation = { __typename: 'mutation_root', delete_following_by_pk?: { __typename: 'following', created_at: any } | null };
 
 export type GetPostQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
 }>;
 
 
-export type GetPostQuery = { __typename?: 'query_root', posts_by_pk?: { __typename?: 'posts', media_id: any, caption?: string | null, created_at: any, likes_aggregate: { __typename?: 'likes_aggregate', aggregate?: { __typename?: 'likes_aggregate_fields', count: number } | null }, profile?: { __typename?: 'profiles', username: string, account: { __typename?: 'users', displayName: string, avatarUrl: string } } | null } | null };
+export type GetPostQuery = { __typename: 'query_root', posts_by_pk?: { __typename: 'posts', media_id: any, caption?: string | null, created_at: any, likes_aggregate: { __typename: 'likes_aggregate', aggregate?: { __typename: 'likes_aggregate_fields', count: number } | null }, profile?: { __typename: 'profiles', username: string, account: { __typename: 'users', displayName: string, avatarUrl: string } } | null } | null };
+
+export type GetFollowingPostsQueryVariables = Exact<{
+  profile: Scalars['uuid']['input'];
+}>;
+
+
+export type GetFollowingPostsQuery = { __typename: 'query_root', posts: Array<{ __typename: 'posts', id: any, media_id: any, caption?: string | null, created_at: any, profile?: { __typename: 'profiles', username: string, account: { __typename: 'users', displayName: string, avatarUrl: string } } | null }> };
+
+export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPostsQuery = { __typename: 'query_root', posts: Array<{ __typename: 'posts', id: any, media_id: any, caption?: string | null, created_at: any, profile?: { __typename: 'profiles', username: string, account: { __typename: 'users', displayName: string, avatarUrl: string } } | null }> };
 
 export type InsertProfileMutationVariables = Exact<{
   username?: InputMaybe<Scalars['String']['input']>;
@@ -7260,11 +7295,15 @@ export type InsertProfileMutationVariables = Exact<{
 }>;
 
 
-export type InsertProfileMutation = { __typename?: 'mutation_root', insert_profiles_one?: { __typename?: 'profiles', id: any } | null };
+export type InsertProfileMutation = { __typename: 'mutation_root', insert_profiles_one?: { __typename: 'profiles', id: any } | null };
 
 
-export const InsertPostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertPost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"media_id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"caption"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_posts_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"media_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"media_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"caption"},"value":{"kind":"Variable","name":{"kind":"Name","value":"caption"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]}}]} as unknown as DocumentNode<InsertPostMutation, InsertPostMutationVariables>;
-export const GetProfileByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProfileById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profiles_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]} as unknown as DocumentNode<GetProfileByIdQuery, GetProfileByIdQueryVariables>;
-export const GetProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profiles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"username"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"account"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}}]}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"is_private"}},{"kind":"Field","name":{"kind":"Name","value":"followers_aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"following_aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"posts_aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"media_id"}}]}}]}}]}}]} as unknown as DocumentNode<GetProfileQuery, GetProfileQueryVariables>;
-export const GetPostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"media_id"}},{"kind":"Field","name":{"kind":"Name","value":"caption"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"likes_aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"account"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetPostQuery, GetPostQueryVariables>;
-export const InsertProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"is_private"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_profiles_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"username"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"is_private"},"value":{"kind":"Variable","name":{"kind":"Name","value":"is_private"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<InsertProfileMutation, InsertProfileMutationVariables>;
+export const InsertPostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertPost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"media_id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"caption"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"insert_posts_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"media_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"media_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"caption"},"value":{"kind":"Variable","name":{"kind":"Name","value":"caption"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]}}]} as unknown as DocumentNode<InsertPostMutation, InsertPostMutationVariables>;
+export const GetProfileByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProfileById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"profiles_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]} as unknown as DocumentNode<GetProfileByIdQuery, GetProfileByIdQueryVariables>;
+export const GetProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"profiles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"username"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"account"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}}]}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"is_private"}},{"kind":"Field","name":{"kind":"Name","value":"is_following"}},{"kind":"Field","name":{"kind":"Name","value":"is_requested_following"}},{"kind":"Field","name":{"kind":"Name","value":"followers_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"is_accepted"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"BooleanValue","value":true}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"following_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"is_accepted"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"BooleanValue","value":true}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"posts_aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"media_id"}}]}}]}}]}}]} as unknown as DocumentNode<GetProfileQuery, GetProfileQueryVariables>;
+export const FollowProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"FollowProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"profile"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"insert_following_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"following_profile_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"profile"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"is_accepted"}}]}}]}}]} as unknown as DocumentNode<FollowProfileMutation, FollowProfileMutationVariables>;
+export const UnfollowProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UnfollowProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"profile"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"myProfile"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"delete_following_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"follower_profile_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"myProfile"}}},{"kind":"Argument","name":{"kind":"Name","value":"following_profile_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"profile"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<UnfollowProfileMutation, UnfollowProfileMutationVariables>;
+export const GetPostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"posts_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"media_id"}},{"kind":"Field","name":{"kind":"Name","value":"caption"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"likes_aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"account"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetPostQuery, GetPostQueryVariables>;
+export const GetFollowingPostsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetFollowingPosts"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"profile"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"posts"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"created_at"},"value":{"kind":"EnumValue","value":"desc"}}]}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"profile"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"followers"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"followerProfile"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"profile"}}}]}}]}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"media_id"}},{"kind":"Field","name":{"kind":"Name","value":"caption"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"account"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetFollowingPostsQuery, GetFollowingPostsQueryVariables>;
+export const GetPostsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPosts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"posts"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"created_at"},"value":{"kind":"EnumValue","value":"desc"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"media_id"}},{"kind":"Field","name":{"kind":"Name","value":"caption"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"account"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetPostsQuery, GetPostsQueryVariables>;
+export const InsertProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"is_private"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"insert_profiles_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"username"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"is_private"},"value":{"kind":"Variable","name":{"kind":"Name","value":"is_private"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<InsertProfileMutation, InsertProfileMutationVariables>;

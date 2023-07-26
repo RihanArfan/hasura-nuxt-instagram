@@ -9416,17 +9416,6 @@ export default {
             "args": []
           },
           {
-            "name": "admin_approved",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
             "name": "comments",
             "type": {
               "kind": "NON_NULL",
@@ -9835,6 +9824,25 @@ export default {
             "args": []
           },
           {
+            "name": "is_admin_approved",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "is_following",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "is_private",
             "type": {
               "kind": "NON_NULL",
@@ -9842,6 +9850,14 @@ export default {
                 "kind": "SCALAR",
                 "name": "Any"
               }
+            },
+            "args": []
+          },
+          {
+            "name": "is_requested_following",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           },
