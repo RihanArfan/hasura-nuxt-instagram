@@ -21,6 +21,7 @@ const { data, fetching } = useQuery({
         }
         description
         is_private
+        is_admin_approved
         is_following
         is_requested_following
         followers_aggregate(where: { is_accepted: { _eq: true } }) {
@@ -73,7 +74,7 @@ const followProfile = async () => {
   if (error) useErrorToast({ id: error?.name, description: error?.message });
 
   if (!data?.insert_following_one?.is_accepted) return;
-  isAccepted.value = true
+  isAccepted.value = true;
   isRequested.value = false;
 };
 
@@ -112,6 +113,16 @@ const unfollowProfile = async () => {
       <Title>{{ profile?.account.displayName ?? `@${username}` }}</Title>
     </Head>
 
+    <UNotification
+      v-if="isMyProfile && !profile?.is_admin_approved"
+      icon="i-heroicons-information-circle"
+      title="Profile pending approval"
+      description="Your profile will be visible after admin approval. You can still upload posts and follow other users."
+      class="mb-3"
+      :close-button="false"
+      timeout="0"
+    />
+
     <div
       class="my-6 flex items-center justify-between gap-8 sm:my-16 md:mx-16 md:gap-16"
     >
@@ -139,7 +150,7 @@ const unfollowProfile = async () => {
 
           <template v-if="!isMyProfile">
             <UButtonGroup
-              v-if="profile?.is_following && !isUnfollowed || isAccepted"
+              v-if="(profile?.is_following && !isUnfollowed) || isAccepted"
               size="sm"
             >
               <UButton label="Following" color="gray" disabled />
@@ -164,7 +175,8 @@ const unfollowProfile = async () => {
 
             <UButton
               v-else-if="
-                !profile?.is_following && !profile?.is_requested_following || isUnfollowed
+                (!profile?.is_following && !profile?.is_requested_following) ||
+                isUnfollowed
               "
               class="px-6"
               @click="followProfile"
