@@ -62,6 +62,7 @@ const isLoading = computed(() => fetching.value);
         caption: post?.caption,
         created_at: post?.created_at,
       }"
+      :link="false"
     />
     <div v-else>Could not load post</div>
   </UModal>

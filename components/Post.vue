@@ -3,6 +3,7 @@
 import { useNhostClient } from "@nhost/vue";
 
 interface Post {
+  id?: string;
   media_id: string;
   created_at?: string;
   caption?: string | null;
@@ -18,19 +19,21 @@ interface Profile {
 
 const props = withDefaults(
   defineProps<{
-    details: boolean;
+    details?: boolean;
+    link?: boolean;
     profile: Profile;
     post: Post;
   }>(),
   {
     details: true,
+    link: true,
   },
 );
 
 const timeAgo = ref();
 watchEffect(() => {
   if (!props.post.created_at) return;
-  timeAgo.value = useTimeAgo(props.post.created_at);
+  timeAgo.value = unref(useTimeAgo(props.post.created_at));
 });
 
 const { nhost } = useNhostClient();
@@ -52,15 +55,25 @@ if (error) {
 <template>
   <UCard
     :ui="{
-      base: 'overflow-hidden w-full',
+      base: 'overflow-hidden w-full ',
       background: 'bg-white/50 dark:bg-gray-900/50',
       ring: '',
       divider: '',
-      body: { padding: '' },
+      body: { padding: '', base: 'relative' },
       footer: { padding: 'p-2' },
     }"
   >
     <USkeleton v-if="!presignedUrl" :ui="{ rounded: '' }" class="pb-[100%]" />
+    <NuxtLink v-else-if="link && post.id" :to="`/@${profile.username}/${post.id}`">
+      <img
+        :src="presignedUrl.url"
+        class="w-full"
+        width="500"
+        height="500"
+        :alt="`${profile.account.displayName}'s post'`"
+        loading="lazy"
+      />
+    </NuxtLink>
     <img
       v-else
       :src="presignedUrl.url"
@@ -71,30 +84,31 @@ if (error) {
       loading="lazy"
     />
 
-    <template v-if="details" #footer>
-      <div class="flex gap-2">
-        <UAvatar
-          :alt="`${profile.account.displayName}'s avatar`"
-          size="md"
-          class="aspect-square shrink-0"
-        />
+    <div
+      v-if="details"
+      class="absolute bottom-0 right-0 flex min-h-[100px] w-full flex-col justify-end bg-gradient-to-t from-black px-3 py-4 text-neutral-100"
+      style="--tw-gradient-from: rgba(0, 0, 0, 0.85)"
+    >
+      <div class="flex w-full gap-2">
+        <NuxtLink :to="`/@${profile.username}`">
+          <UAvatar
+            :alt="`${profile.account.displayName}'s avatar`"
+            size="xl"
+            class="aspect-square shrink-0"
+          />
+        </NuxtLink>
 
-        <div class="flex flex-col">
-          <div class="flex gap-2 text-xs text-gray-500">
-            <span
-              class="text-md font-bold text-neutral-700 dark:text-neutral-300"
-            >
-              {{ profile.username }}
-            </span>
-            <span>@{{ profile.username }}</span>
+        <div class="flex w-full grow flex-col">
+          <div class="text- flex w-full grow items-center gap-2">
+            <NuxtLink :to="`/@${profile.username}`" class="text-xl font-bold">
+              {{ profile.account.displayName }}
+            </NuxtLink>
             <time :datetime="post.created_at">{{ timeAgo }}</time>
           </div>
 
-          <p v-if="post.caption" class="text-neutral-900 dark:text-neutral-100">
-            {{ post.caption }}
-          </p>
+          <p v-if="post.caption">{{ post.caption }} </p>
         </div>
       </div>
-    </template>
+    </div>
   </UCard>
 </template>
