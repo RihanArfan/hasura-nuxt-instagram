@@ -32,18 +32,8 @@ const { data, fetching } = useQuery({
     <Post
       v-for="post in data?.posts"
       :key="post.id"
-      :post="{
-        media_id: post.media_id,
-        caption: post.caption,
-        created_at: post.created_at,
-      }"
-      :profile="{
-        username: post.profile?.username!,
-        account: {
-          displayName: post.profile?.account.displayName!,
-          avatarUrl: post.profile?.account.avatarUrl,
-        },
-      }"
+      :post="post"
+      :profile="post.profile!"
     />
   </div>
 </template>
