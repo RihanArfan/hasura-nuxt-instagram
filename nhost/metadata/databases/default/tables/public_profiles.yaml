@@ -48,8 +48,8 @@ insert_permissions:
     permission:
       check: {}
       set:
-        admin_approved: "false"
         id: x-hasura-User-Id
+        is_admin_approved: "false"
       columns:
         - created_at
         - description
@@ -61,7 +61,7 @@ select_permissions:
   - role: user
     permission:
       columns:
-        - admin_approved
+        - is_admin_approved
         - created_at
         - description
         - id
@@ -72,7 +72,7 @@ select_permissions:
         _or:
           - id:
               _eq: X-Hasura-User-Id
-          - admin_approved:
+          - is_admin_approved:
               _eq: true
 update_permissions:
   - role: user

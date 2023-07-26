@@ -33,7 +33,7 @@ select_permissions:
               _eq: X-Hasura-User-Id
           - profile:
               _and:
-                - admin_approved:
+                - is_admin_approved:
                     _eq: true
                 - followers:
                     follower_profile_id:

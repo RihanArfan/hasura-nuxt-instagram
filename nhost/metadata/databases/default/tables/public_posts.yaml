@@ -52,7 +52,7 @@ select_permissions:
           - profile:
               _and:
                 - _or:
-                    - admin_approved:
+                    - is_admin_approved:
                         _eq: true
                     - id:
                         _eq: X-Hasura-User-Id
