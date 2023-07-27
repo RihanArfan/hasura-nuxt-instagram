@@ -59,7 +59,7 @@ const links = computed(() => [
   },
   {
     avatar: {
-      src: userData.value?.avatarUrl,
+      // src: userData.value?.avatarUrl,
       alt: userData.value?.displayName,
     },
     to: `/@${myProfile.value?.username}`,

@@ -130,7 +130,6 @@ const unfollowProfile = async () => {
     >
       <UAvatar
         size="3xl"
-        :src="profile?.account.avatarUrl"
         :alt="profile?.account.displayName"
         :ui="{ size: { '3xl': 'h-24 w-24 md:h-48 md:w-48 text-6xl' } }"
       />
