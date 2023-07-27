@@ -15,7 +15,7 @@ const config: CodegenConfig = {
   schema: {
     [nhost.graphql.httpUrl]: {
       headers: {
-        "x-hasura-admin-secret": process.env.NHOST_HASURA_SECRET!,
+        "x-hasura-admin-secret": process.env.NUXT_HASURA_SECRET!,
       },
     },
   },

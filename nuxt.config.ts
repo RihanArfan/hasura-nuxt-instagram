@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    hasuraSecret: "",
     public: {
       nhostSubdomain: "",
       nhostRegion: "",

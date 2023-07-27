@@ -5,6 +5,7 @@
     "deps",
     "onboarding",
     "feed",
-    "nhost"
+    "nhost",
+    "admin"
   ]
 }
