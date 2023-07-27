@@ -34,7 +34,7 @@ const onSubmit = async () => {
         <h2 class="mb-10 text-xl">Login into to continue</h2>
       </div>
 
-      <form @submit.prevent="onSubmit">
+      <form type="post" @submit.prevent="onSubmit">
         <UFormGroup name="secret" :error="errorMessage">
           <UInput
             v-model="secret"
