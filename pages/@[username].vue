@@ -116,7 +116,7 @@ const unfollowProfile = async () => {
     </Head>
 
     <UNotification
-      v-if="isMyProfile && !profile?.is_admin_approved"
+      v-if="isMyProfile && !profile?.is_admin_approved && !fetching"
       icon="i-heroicons-information-circle"
       title="Profile pending approval"
       description="Your profile will be visible after admin approval. You can still upload posts and follow other users."
