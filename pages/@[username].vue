@@ -76,8 +76,8 @@ const followProfile = async () => {
   if (error) useErrorToast({ id: error?.name, description: error?.message });
 
   if (!data?.insert_following_one?.is_accepted) return;
-  isAccepted.value = true;
-  isFollowing.value = false;
+  isRequested.value = false;
+  isFollowing.value = true;
 };
 
 // unfollow or cancel request
