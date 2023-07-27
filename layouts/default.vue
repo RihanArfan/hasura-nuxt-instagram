@@ -14,6 +14,7 @@ const toggleDark = useToggle(isDark);
 
 const isAuthenticated = useAuthenticated();
 const userData = useUserData();
+const adminSecret = useAdminSecret();
 
 // get my profile
 const { data: profileQueryResponse, fetching: isFetchingProfile } = useQuery({
@@ -51,7 +52,7 @@ const links = computed(() => [
   },
   {
     icon: "i-heroicons-magnifying-glass-20-solid",
-    to: "/search",
+    click: () => (isSearchOpen.value = true),
   },
   {
     icon: "i-heroicons-plus",
@@ -66,7 +67,16 @@ const links = computed(() => [
   },
 ]);
 
+const adminButton = computed(() => {
+  if (!adminSecret.value) return {};
+  return {
+    icon: "i-heroicons-cog-8-tooth",
+    to: "/admin",
+  };
+});
+
 const extra = computed(() => [
+  adminButton.value,
   {
     icon: isDark.value ? "i-heroicons-sun" : "i-heroicons-moon",
     click: () => toggleDark(),
@@ -77,8 +87,9 @@ const extra = computed(() => [
   },
 ]);
 
-// create post model handler
+// modal handlers
 const isCreatePostOpen = useCreatePostOpen();
+const isSearchOpen = useSearchOpen();
 
 // drag and drop handler
 const dropZoneRef = ref<HTMLDivElement>();
@@ -152,6 +163,7 @@ const navSpacing = computed(() => {
     </UContainer>
 
     <CreatePost v-model:open="isCreatePostOpen" />
+    <Search v-model:open="isSearchOpen" />
   </div>
 </template>
 
