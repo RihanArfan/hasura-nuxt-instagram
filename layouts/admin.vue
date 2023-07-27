@@ -38,21 +38,7 @@ const extra = computed(() => [
         <h2 class="text-xl font-bold">Pending Accounts</h2>
 
         <div class="flex grow flex-col gap-3 py-4">
-          <NuxtLink v-for="x in 5" :key="x" to="/">
-            <UCard
-              :ui="{
-                body: { padding: 'p-3', base: 'flex items-center gap-5' },
-              }"
-            >
-              <UAvatar
-                src="https://github.com/RihanArfan.png"
-                alt="Avatar"
-                size="md"
-              />
-              <p class="text-xl font-semibold">Rihan Arfan</p>
-              <p class="hidden truncate text-zinc-500 lg:block">@rihanarfan</p>
-            </UCard>
-          </NuxtLink>
+          <AdminPendingAccountLink v-for="x in 5" :key="x" />
         </div>
         <UVerticalNavigation :links="extra" />
       </UContainer>
