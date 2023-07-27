@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useQuery } from "@urql/vue";
+import { graphql } from "~/gql";
+
 useHead({
   title: "Approve accounts",
   titleTemplate: (titleChunk) => {
@@ -8,6 +11,8 @@ useHead({
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
+const config = useRuntimeConfig();
+const adminSecret = useAdminSecret();
 
 const extra = computed(() => [
   {
@@ -21,6 +26,20 @@ const extra = computed(() => [
     to: "/",
   },
 ]);
+
+const { data: profilesQueryResponse, fetching: isFetchingProfiles } = useQuery({
+  query: graphql(`
+    query GetPendingProfiles {
+      profiles(where: { is_admin_approved: { _eq: false } }) {
+        id
+        ...PendingListItem_ProfileFragment
+      }
+    }
+  `),
+  context: {
+    fetchOptions: { headers: { "x-hasura-admin-secret": adminSecret.value } },
+  },
+});
 </script>
 
 <template>
@@ -30,16 +49,25 @@ const extra = computed(() => [
         :ui="{
           base: 'ml-auto flex flex-col',
           padding: 'py-5 px-2 lg:pl-0 pr-5',
-          constrained: 'max-w-2xl',
+          constrained: 'max-w-2xl ',
         }"
         class="justify-self-end"
       >
         <h1 class="mb-2 text-2xl">Social Administration</h1>
         <h2 class="text-xl font-bold">Pending Accounts</h2>
 
-        <div class="flex grow flex-col gap-3 py-4">
-          <AdminPendingAccountLink v-for="x in 5" :key="x" />
+        <div class="flex w-[320px] grow flex-col gap-3 py-4">
+          <template v-if="profilesQueryResponse?.profiles">
+            <AdminPendingAccountLink
+              v-for="profile in profilesQueryResponse?.profiles"
+              :key="profile.id"
+              :profile="profile"
+            />
+          </template>
+
+          <p v-else>No Pending Profiles</p>
         </div>
+
         <UVerticalNavigation :links="extra" />
       </UContainer>
     </div>

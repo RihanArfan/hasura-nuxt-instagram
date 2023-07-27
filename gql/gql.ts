@@ -14,6 +14,9 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  */
 const documents = {
     "\n    mutation InsertPost($media_id: uuid, $caption: String) {\n      insert_posts_one(object: { media_id: $media_id, caption: $caption }) {\n        id\n        profile {\n          username\n        }\n      }\n    }\n  ": types.InsertPostDocument,
+    "\n  fragment PendingListItem_ProfileFragment on profiles {\n    id\n    username\n    account {\n      displayName\n    }\n  }\n": types.PendingListItem_ProfileFragmentFragmentDoc,
+    "\n  fragment Posts_ProfileFragment on profiles {\n    username\n    posts {\n      id\n      media_id\n    }\n    account {\n      displayName\n      avatarUrl\n    }\n  }\n": types.Posts_ProfileFragmentFragmentDoc,
+    "\n    query GetPendingProfiles {\n      profiles(where: { is_admin_approved: { _eq: false } }) {\n        id\n        ...PendingListItem_ProfileFragment\n      }\n    }\n  ": types.GetPendingProfilesDocument,
     "\n    query GetProfileById($id: uuid!) {\n      profiles_by_pk(id: $id) {\n        id\n        username\n      }\n    }\n  ": types.GetProfileByIdDocument,
     "\n    query GetProfile($username: String) {\n      profiles(where: { username: { _eq: $username } }) {\n        id\n        account {\n          displayName\n          avatarUrl\n        }\n        description\n        is_private\n        is_admin_approved\n        is_following\n        is_requested_following\n        followers_aggregate(where: { is_accepted: { _eq: true } }) {\n          aggregate {\n            count\n          }\n        }\n        following_aggregate(where: { is_accepted: { _eq: true } }) {\n          aggregate {\n            count\n          }\n        }\n        posts_aggregate {\n          aggregate {\n            count\n          }\n        }\n        posts {\n          id\n          media_id\n        }\n      }\n    }\n  ": types.GetProfileDocument,
     "\n    mutation FollowProfile($profile: uuid!) {\n      insert_following_one(object: { following_profile_id: $profile }) {\n        is_accepted\n      }\n    }\n  ": types.FollowProfileDocument,
@@ -42,6 +45,18 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation InsertPost($media_id: uuid, $caption: String) {\n      insert_posts_one(object: { media_id: $media_id, caption: $caption }) {\n        id\n        profile {\n          username\n        }\n      }\n    }\n  "): (typeof documents)["\n    mutation InsertPost($media_id: uuid, $caption: String) {\n      insert_posts_one(object: { media_id: $media_id, caption: $caption }) {\n        id\n        profile {\n          username\n        }\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment PendingListItem_ProfileFragment on profiles {\n    id\n    username\n    account {\n      displayName\n    }\n  }\n"): (typeof documents)["\n  fragment PendingListItem_ProfileFragment on profiles {\n    id\n    username\n    account {\n      displayName\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment Posts_ProfileFragment on profiles {\n    username\n    posts {\n      id\n      media_id\n    }\n    account {\n      displayName\n      avatarUrl\n    }\n  }\n"): (typeof documents)["\n  fragment Posts_ProfileFragment on profiles {\n    username\n    posts {\n      id\n      media_id\n    }\n    account {\n      displayName\n      avatarUrl\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query GetPendingProfiles {\n      profiles(where: { is_admin_approved: { _eq: false } }) {\n        id\n        ...PendingListItem_ProfileFragment\n      }\n    }\n  "): (typeof documents)["\n    query GetPendingProfiles {\n      profiles(where: { is_admin_approved: { _eq: false } }) {\n        id\n        ...PendingListItem_ProfileFragment\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

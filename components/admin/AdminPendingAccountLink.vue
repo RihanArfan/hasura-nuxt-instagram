@@ -1,5 +1,26 @@
+<script setup lang="ts">
+import { graphql } from "~/gql";
+import { type FragmentType, useFragment } from "~/gql/fragment-masking";
+
+const PendingProfileListItemFragment = graphql(/* GraphQL */ `
+  fragment PendingListItem_ProfileFragment on profiles {
+    id
+    username
+    account {
+      displayName
+    }
+  }
+`);
+
+const props = defineProps<{
+  profile: FragmentType<typeof PendingProfileListItemFragment>;
+}>();
+
+const profileObj = useFragment(PendingProfileListItemFragment, props.profile);
+</script>
+
 <template>
-  <NuxtLink to="/">
+  <NuxtLink :to="`/admin/@${profileObj.username}`">
     <UCard
       :ui="{
         body: { padding: 'p-3', base: 'flex items-center gap-5' },
@@ -9,11 +30,17 @@
         shadow: '',
       }"
     >
-      <UAvatar src="https://github.com/RihanArfan.png" alt="Avatar" size="md" />
-      <p class="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-        Rihan Arfan
+      <UAvatar
+        :alt="profileObj.account.displayName"
+        size="md"
+        :ui="{ background: 'bg-gray-100 dark:bg-zinc-900' }"
+      />
+      <p
+        class="truncate text-xl font-semibold text-zinc-900 dark:text-zinc-100"
+      >
+        {{ profileObj.account.displayName }}
       </p>
-      <p class="hidden truncate lg:block">@rihanarfan</p>
+      <p class="ml-auto hidden truncate lg:block">@{{ profileObj.username }}</p>
     </UCard>
   </NuxtLink>
 </template>
