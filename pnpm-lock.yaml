@@ -30,8 +30,8 @@ dependencies:
     specifier: ^4.10.8
     version: 4.10.8(vue@3.3.4)
   zod:
-    specifier: ^3.21.4
-    version: 3.21.4
+    specifier: ^3.22.3
+    version: 3.22.3
 
 devDependencies:
   '@graphql-codegen/cli':
@@ -3521,7 +3521,7 @@ packages:
     dependencies:
       type-fest: 4.0.0
       vee-validate: 4.10.8(vue@3.3.4)
-      zod: 3.21.4
+      zod: 3.22.3
     transitivePeerDependencies:
       - vue
     dev: false
@@ -11300,6 +11300,6 @@ packages:
       readable-stream: 3.6.2
     dev: true
 
-  /zod@3.21.4:
-    resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+  /zod@3.22.3:
+    resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
     dev: false

@@ -44,7 +44,7 @@
     "graphql": "^16.8.1",
     "graphql-ws": "^5.14.0",
     "vee-validate": "^4.10.8",
-    "zod": "^3.21.4"
+    "zod": "^3.22.3"
   },
   "pnpm": {
     "overrides": {
