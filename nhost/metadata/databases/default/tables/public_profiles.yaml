@@ -95,9 +95,8 @@ update_permissions:
     permission:
       columns:
         - description
+        - is_admin_approved
         - is_private
         - username
-      filter:
-        id:
-          _eq: X-Hasura-User-Id
+      filter: {}
       check: null
