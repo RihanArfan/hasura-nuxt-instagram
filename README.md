@@ -15,6 +15,7 @@ pnpm install
 Start the development server on `http://localhost:3000`
 
 ```bash
+nhost up
 pnpm run dev
 ```
 
