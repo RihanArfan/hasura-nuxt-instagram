@@ -2324,7 +2324,7 @@ packages:
       npmlog: 5.0.1
       rimraf: 3.0.2
       semver: 7.5.4
-      tar: 6.1.15
+      tar: 6.2.1
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -4620,7 +4620,7 @@ packages:
       minipass-pipeline: 1.2.4
       p-map: 4.0.0
       ssri: 10.0.4
-      tar: 6.1.15
+      tar: 6.2.1
       unique-filename: 3.0.0
     dev: true
 
@@ -6341,7 +6341,7 @@ packages:
       mri: 1.2.0
       node-fetch-native: 1.2.0
       pathe: 1.1.1
-      tar: 6.1.15
+      tar: 6.2.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -8105,7 +8105,7 @@ packages:
       npmlog: 6.0.2
       rimraf: 3.0.2
       semver: 7.5.4
-      tar: 6.1.15
+      tar: 6.2.1
       which: 2.0.2
     transitivePeerDependencies:
       - supports-color
@@ -8574,7 +8574,7 @@ packages:
       read-package-json-fast: 3.0.2
       sigstore: 1.8.0
       ssri: 10.0.4
-      tar: 6.1.15
+      tar: 6.2.1
     transitivePeerDependencies:
       - bluebird
       - supports-color
@@ -10208,8 +10208,8 @@ packages:
       readable-stream: 3.6.2
     dev: true
 
-  /tar@6.1.15:
-    resolution: {integrity: sha512-/zKt9UyngnxIT/EAGYuxaMYgOIJiP81ab9ZfkILq4oNLPFX50qyYmu7jRj9qeXoxmJHjGlbH0+cm2uy1WCs10A==}
+  /tar@6.2.1:
+    resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
     dependencies:
       chownr: 2.0.0
